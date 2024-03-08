@@ -1,6 +1,163 @@
-<p align="center"><img src="buildroot/share/pixmaps/logo/marlin-outrun-nf-500.png" height="250" alt="MarlinFirmware's logo" /></p>
+# Marlin for Dagoma DiscoEasy200
 
-<h1 align="center">Marlin 3D Printer Firmware</h1>
+This repo is a fork of the Marlin repo configured specifically for various versions of the Dagoma DiscoEasy200 3D Printer.
+
+This is based on the very latest Marlin bugfix-2.1.x version
+which is a lot more advanced than the Dagoma stock firmware
+which is still based on a beta version of Marlin v1.1
+with a lot of Dagoma bespoke development
+for functionality that was not available in Marlin at the time but now is.
+
+Consequently you should now be able to achieve a higher quality of printing
+and benefit from significantly more advanced functionality.
+
+The intention is to support all Dagoma versions of the DiscoEasy200 including:
+
+* Screen / No screen (Dagoma screen is assumed - other screens may be supported in the future)
+* Bicolor
+* Extruder+ (with a filament sensor)
+* Black thermistor (white is assumed)
+* Expert pack - Trapezoidal z-screws
+* XL
+* English, French & German languages
+
+The configuration settings for these options have been taken
+directly from the Dagoma soure code and should work.
+
+Every combination of the above are compiled automatically for each formal release.
+
+In addition, several selected community enhancements are also supported as options:
+
+* All other Marlin languages (mostly not tested - japanese / cyrilic language may need alternative fonts defining)
+* Z122 head
+* MKS standard pinouts (instead of the Dagoma special pinouts)
+* Heated Bed (from atelier3d-shop.fr)
+
+The configuration settings for these options have been taken
+from various Thingiverse things and Github repos
+that have previously been built to support these modifications,
+however none of these configurations have yet been tested either.
+
+In addition, a standard set of software functionality is included,
+carefully selected and tuned based on the best print quality
+the author could achieve and with input and advice from Marlin experts.
+Alternative versions without all / some of this functionality can
+also be built manually - and this can be useful when
+e.g. running Input Shaping tests which would nbot work
+with some of this functionality enabled
+(see [the calibration wiki](./wiki/4-comprehensive-calibration-guide) for details).
+
+## Tested Versions
+
+**Hardware**
+
+* [x] Screen
+* [ ] No screen
+* [x] White Thermistor
+* [ ] Black Thermistor
+* [ ] Extruder+
+* [ ] Bicolor
+* [ ] XL
+* [ ] Expert pack (T8-4)
+* [ ] T8-2
+* [ ] T8-8
+* [ ] Japanese / Cyrillic languages
+* [ ] Z122
+* [x] Dagoma special pinouts
+* [ ] MKS standard pinouts
+* [ ] MKS standard pinouts + Extruder+
+* [ ] MKS standard pinouts + Bicolor
+* [ ] Atelier3D Heated bed
+* [ ] Dagoma std probe
+* [ ] Bltouch
+
+At present only the stock D200 + LCD + White Thermistor has been tested,
+however all these standard Dagoma options are built automatically
+based on common configuration settings,
+so all functionality tested on the author's stock+LCD+White
+should work fine on these other variants and,
+until someone else has tested the different options
+and they are verified here,
+you do need to run some tests when you first load
+this firmware build onto your DE200.
+
+**Software**
+
+* [x] Homing
+* [x] G1 Printing
+* [ ] G2 (Arc) printing + ArcWelder
+* [x] Bed levelling - Linear
+* [ ] Bed levelling - Bilinear
+* [ ] Bed levelling - Unified
+* [x] Probe Z-offset Wizard
+* [x] Babysteps
+* [x] Filament Unload/Load/Change
+* [x] PID Temperature control
+* [x] MPC Temperature control
+* [x] Linear Advance
+* [x] Classic Jerk
+* [x] Junction Deviation
+* [ ] S-curve
+* [ ] Backlash
+* [ ] Input shaping
+* [ ] Meatpack
+* [ ] SD printing
+* [ ] Layer icon
+* [ ] Countdown icon
+
+The author is happy to support users **before** they load the firmware onto their
+system in order to ensure that it works for them,
+as well as providing support for issues found after you try it.
+
+If you have a working version of Marlin for your specific configuration,
+then providing that we have access to the source code
+we can almost certainly get the settings we need to make this build
+to support your specific machine.
+
+Some combinations of these options with Standard builds are compiled automatically for each release,
+but an individual build for a single combination of any of these options can be manually initiated and
+built automatically using the same Github Actions workflow.
+
+### Documentation
+
+There is a [wiki](./wiki)
+which already gives a lot more detail about these builds,
+with an intention to extend this further.
+
+This wiki also gives some guidance on how to test out the firmware for your own variant.
+If you want help with testing the build for your variant,
+please raise a Github issue and the author will do his best to support you.
+
+### Open Source
+
+The source code is open, and you are welcome to copy this for your own use -
+however the author believes that a single flexible source for DE200 Firmware
+would be the best solution for the community and would like to open
+the administration and ownership of this to the DE200 community
+for use as a shared resource.
+
+### DISCLAIMER
+
+I created this site because I wanted an up-to-date version of Marlin
+for my specific DE200 configuration stock+LCD+english),
+and the firmware for this version has been tested.
+
+However unless I get reports for other versions working OK,
+I cannot say for certainty that they will work.
+
+That said, the Marlin software is tried and tested,
+I have comprehensively tested the Stock+LCD+White-Thermistor variant on
+my own DE200 and use it in production,
+and all other variants are minor variations of the standard configuration.
+
+However, whilst the author has made reasonable efforts to configure them correctly,
+***you load these version onto your printer and use them at your own risk***.
+
+The author will provide support to the best of his ability,
+and is extremely open to sharing support and ownership with other community experts.
+
+# Marlin 3D Printer Firmware
+<p align="center"><img src="buildroot/share/pixmaps/logo/marlin-outrun-nf-500.png" height="250" alt="MarlinFirmware's logo" /></p>
 
 <p align="center">
     <a href="/LICENSE"><img alt="GPL-V3.0 License" src="https://img.shields.io/github/license/marlinfirmware/marlin.svg"></a>
