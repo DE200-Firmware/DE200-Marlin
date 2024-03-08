@@ -45,7 +45,7 @@ Alternative versions without all / some of this functionality can
 also be built manually - and this can be useful when
 e.g. running Input Shaping tests which would nbot work
 with some of this functionality enabled
-(see [the calibration wiki](../../../../wiki/4-comprehensive-calibration-guide) for details).
+(see [the calibration wiki](../../wiki/4-comprehensive-calibration-guide) for details).
 
 ## Tested Versions
 
@@ -120,7 +120,7 @@ built automatically using the same Github Actions workflow.
 
 ### Documentation
 
-There is a [wiki](./wiki)
+There is a [wiki](../../wiki)
 which already gives a lot more detail about these builds,
 with an intention to extend this further.
 
