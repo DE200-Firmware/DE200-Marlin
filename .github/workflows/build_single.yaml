@@ -1,0 +1,262 @@
+name: Build firmware - Single variant
+
+on:
+  workflow_dispatch:
+    # Note: We are at the Github maximum of 10 inputs
+    inputs:
+      lang:
+        description: 'Language:'
+        options:
+            - en
+            - an
+            - bg
+            - ca
+            - cz
+            - da
+            - de
+            - el
+            - el_CY
+            - es
+            - eu
+            - fi
+            - fr
+            - gl
+            - hr
+            - hu
+            - it
+            - jp_kana
+            - ko_KR
+            - nl
+            - pl
+            - pt
+            - pt_br
+            - ro
+            - ru
+            - sk
+            - sv
+            - tr
+            - uk
+            - vi
+            - zh_CN
+            - zh_TW
+        required: true
+        type: choice
+        default: 'en'
+      screen:
+        description: 'Screen (Std, None):'
+        options: [STD, NONE]
+        required: true
+        type: choice
+        default: STD
+      extruder:
+        description: 'Extruder (Std, Extruder+, Bicolor, MK8):'
+        options: [STD, EXTRUDER_PLUS, BICOLOR, MK8]
+        required: true
+        type: choice
+        default: STD
+      zscrews:
+        description: 'Z-Screws (Std, Expert (T8-4), T8-8, T8-2):'
+        options: [STD, EXPERT, T8_8, T8_2]
+        required: true
+        type: choice
+        default: STD
+      size:
+        description: 'Size (Std, XL):'
+        options: [STD, XL]
+        required: true
+        type: choice
+        default: STD
+      thermistor:
+        description: 'Thermistor type (White, Black):'
+        options: [WHITE, BLACK]
+        required: true
+        type: choice
+        default: WHITE
+      warping:
+        description: 'Anti-Warping (Std, Atelier3D):'
+        options: [STD, BED_ATELIER3D]
+        required: true
+        type: choice
+        default: STD
+      pinout:
+        description: 'Pinout (Std, MKS):'
+        options: [STD, MKS]
+        required: true
+        type: choice
+        default: STD
+      head:
+        description: 'Print head (Std, BLtouch, Z122):'
+        options: [STD, STD_BLTOUCH, Z122, Z122_BLTOUCH]
+        required: true
+        type: choice
+        default: STD
+      experiment:
+        description: 'experiment features:'
+        options: [NONE, BED_BILINEAR, BED_UNIFIED, INPUT_SHAPING, S_CURVE, PID, JUNC_DEV, STATUS_ICONS, ADAPTIVE_SMOOTHING, FWRETRACT]
+        required: true
+        type: choice
+        default: NONE
+
+  workflow_call:
+    inputs:
+      lang:
+        description: 'Language:'
+        required: true
+        type: string
+      screen:
+        description: 'Screen (Std, None):'
+        required: true
+        type: string
+      extruder:
+        description: 'extruder (Std, Extruder+, Bicolor):'
+        required: true
+        type: string
+      zscrews:
+        description: 'Z-Screws (Std, Expert Pack):'
+        required: true
+        type: string
+      size:
+        description: 'Size (Std, XL):'
+        required: true
+        type: string
+      thermistor:
+        description: 'Thermistor type (White, Black):'
+        required: true
+        type: string
+      warping:
+        description: 'Anti-Warping (Std, Atelier3D):'
+        required: true
+        type: string
+      pinout:
+        description: 'Pinout (Std, MKS):'
+        required: true
+        type: string
+      head:
+        description: 'Print head (Std, Z122):'
+        required: true
+        type: string
+      experiment:
+        description: 'experiment Marlin features:'
+        required: true
+        type: string
+
+concurrency:
+  group: "\
+    ${{ github.workflow_ref }}-${{ github.ref }}\
+    -lang:${{ inputs.lang }}\
+    -screen:${{ inputs.screen }}\
+    -extruder:${{ inputs.extruder }}\
+    -zscrews:${{ inputs.zscrews }}\
+    -size:${{ inputs.size }}\
+    -thermistor:${{ inputs.thermistor }}\
+    -warping:${{ inputs.warping }}\
+    -pinout:${{ inputs.pinout }}\
+    -head:${{ inputs.head }}\
+    -experiment:${{ inputs.experiment }}\
+    "
+  cancel-in-progress: true
+
+jobs:
+  build:
+    env:
+      BUILD_FILE: ${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}{19}',
+        'DE200_2.1.2.2-',
+        (inputs.screen       == 'NONE'  && 'NoLCD') || inputs.lang,
+        (inputs.screen       != 'NONE'  && inputs.screen != 'STD' && '-') || '',
+        (inputs.screen       != 'NONE'  && inputs.screen != 'STD' && inputs.screen) || '',
+        (inputs.extruder     != 'STD'   && '-') || '',
+        (inputs.extruder     != 'STD'   && inputs.extruder) || '',
+        (inputs.zscrews      != 'STD'   && '-') || '',
+        (inputs.zscrews      != 'STD'   && inputs.zscrews) || '',
+        (inputs.size         != 'STD'   && '-') || '',
+        (inputs.size         != 'STD'   && inputs.size) || '',
+        (inputs.thermistor   != 'WHITE' && '-') || '',
+        (inputs.thermistor   != 'WHITE' && inputs.thermistor) || '',
+        (inputs.warping      != 'STD'   && '-') || '',
+        (inputs.warping      != 'STD'   && inputs.warping) || '',
+        (inputs.pinout       != 'STD'   && '-') || '',
+        (inputs.pinout       != 'STD'   && inputs.pinout) || '',
+        (inputs.head         != 'STD'   && '-') || '',
+        (inputs.head         != 'STD'   && inputs.head) || '',
+        (inputs.experiment   != 'NONE'  && '-EXPERIMENTAL-') || '',
+        (inputs.experiment   != 'NONE'  && inputs.experiment) || ''
+        ) }}
+    name: "Build:
+      ${{ (inputs.screen == 'NONE' && 'nolcd') || inputs.lang }}
+      ${{ (inputs.screen != 'NONE' && inputs.screen != 'STD' && inputs.screen) || '' }}
+      extrud:${{ inputs.extruder }}
+      screws:${{ inputs.zscrews }}
+      size:${{ inputs.size }}
+      thermistor:${{ inputs.thermistor }}
+      warp:${{ inputs.warping }}
+      pinout:${{ inputs.pinout }}
+      head:${{ inputs.head }}
+      exp:${{ inputs.experiment }}
+      "
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Setup cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cache/pip
+          ~/.platformio/.cache
+        key: ${{ github.workflow_ref }}
+        save-always: true
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Install PlatformIO
+      run: |
+        python -m pip install --upgrade pip
+        pip install --upgrade platformio
+    - name: "PlatformIO: ${{ env.BUILD_FILE }}.hex"
+      run: platformio run
+      env:
+        PLATFORMIO_BUILD_FLAGS: "\
+          -D DE200_LANGUAGE=${{ inputs.lang }}
+          -D DE200_SCREEN_${{ inputs.screen }}
+          -D DE200_EXTRUDER_${{ inputs.extruder }}
+          -D DE200_ZSCREWS_${{ inputs.zscrews }}
+          -D DE200_SIZE_${{ inputs.size }}
+          -D DE200_THERMISTOR_${{ inputs.thermistor }}
+          -D DE200_WARPING_${{ inputs.warping }}
+          -D DE200_PINOUT_${{ inputs.pinout }}
+          -D DE200_HEAD_${{ inputs.head }}
+          -D DE200_EXPERIMENT_${{ inputs.experiment }}\
+          "
+    - name: Post build script
+      run: |
+        # Display filesize
+        ls -l .pio/build/mega2560/firmware.hex
+        # Builds must use no more than 253,952 bytes of firmware memory.
+        # Hex build file records use c. 45 bytes for each 16 bytes of firmware.
+        # End of file is an extra 15 bytes.
+        # So build file should be no more than 714,255 bytes in size.
+        # Fail job if build file is bigger than this.
+        # Otherwise calculate approx memory as xKB_of_248KB and add to end of filename.
+        mv .pio/build/mega2560/firmware.hex .pio/build/mega2560/$BUILD_FILE.hex
+
+    - name: Upload artefact
+      if: ${{ github.event_name != 'release' }}
+      uses: actions/upload-artifact@v4
+      # https://github.com/marketplace/actions/upload-a-build-artifact
+      with:
+        name: ${{ env.BUILD_FILE }}.hex
+        path: .pio/build/mega2560/${{ env.BUILD_FILE }}.hex
+        compression-level: 9
+        if-no-files-found: error
+
+    - name: Upload release
+      if: ${{ github.event_name == 'release' }}
+      run: gh release upload ${{github.event.release.tag_name}} .pio/build/mega2560/$BUILD_FILE.hex
+      env:
+        GITHUB_TOKEN: ${{ github.TOKEN }}
+
+    # - name: Save build to repo
+      # if temp branch exists
+      # Add/commit the build file to the temp branch
+      # https://github.com/marketplace/actions/add-commit
