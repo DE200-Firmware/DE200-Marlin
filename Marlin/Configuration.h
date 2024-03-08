@@ -1575,10 +1575,12 @@
   #define CLASSIC_JERK
 #endif
 #if ENABLED(CLASSIC_JERK)
-  #define DEFAULT_XJERK 20.0
-  #define DEFAULT_YJERK 20.0
+  #define DEFAULT_XJERK   20.0
+  #define DEFAULT_YJERK   20.0
   //#define DEFAULT_ZJERK  0.4
-  #define DEFAULT_ZJERK  0.15
+  #define DEFAULT_ZJERK    0.15
+  //#define DEFAULT_EJERK 10.0  // Linear Advance requires minimum of 10.0
+  #define DEFAULT_EJERK    5.0
   //#define DEFAULT_IJERK  0.3
   //#define DEFAULT_JJERK  0.3
   //#define DEFAULT_KJERK  0.3
