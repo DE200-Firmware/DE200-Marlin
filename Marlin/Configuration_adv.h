@@ -1277,8 +1277,8 @@
  * Use M201 F<freq> S<min%> to change limits at runtime.
  */
 #if DISABLED(DE200_EXPERIMENT_BASIC)
-  #define XY_FREQUENCY_LIMIT        10 // (Hz) Maximum frequency of small zigzag infill moves. Set with M201 F<hertz>.
-
+  #define XY_FREQUENCY_LIMIT      10 // (Hz) Maximum frequency of small zigzag infill moves. Set with M201 F<hertz>.
+#endif
 #ifdef XY_FREQUENCY_LIMIT
   #define XY_FREQUENCY_MIN_PERCENT 5 // (%) Minimum FR percentage to apply. Set with M201 S<min%>.
 #endif
