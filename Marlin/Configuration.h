@@ -80,9 +80,11 @@
  *
  * This is extensible with other wiring schemas
  */
-// DE200_PINOUT_* - default: STD; available: STD, MKS
-//#define DE200_PINOUT_STD
-//#define DE200_PINOUT_MKS
+// DE200_MB_* - default: MKS15DAG; available: MKS15DAG, MKS15STD, DAGF5, DAGD6
+//#define DE200_MB_MKS15DAG
+//#define DE200_MB_MKS15STD
+//#define DE200_MB_DAGF5
+//#define DE200_MB_DAGD6
 
 /*
  * DE200_HEAD_* defines as many variants of head as needed.
@@ -101,17 +103,29 @@
 //#define DE200_HEAD_Z122
 //#define DE200_HEAD_Z122_BLTOUCH
 
-// DE200_EXPERIMENT_* - default NONE; available NONE, BED_BILINEAR, INPUT_SHAPING, S_CURVE, PID, JUNC_DEV, STATUS_ICONS, ADAPTIVE_SMOOTHING, FWRETRACT
+// DE200_EXPERIMENT_* - default NONE; available NONE, BASIC, BED_BILINEAR, INPUT_SHAPING, S_CURVE, PID, CLASSIC_JERK, STATUS_ICONS, ADAPTIVE_SMOOTHING, FWRETRACT
+
+// NONE - All default software options
 //#define DE200_EXPERIMENT_NONE
+// BASIC - Use for Input shaping measurements - CLASSIC_JERK, no INPUT_SHAPING or S_CURVE or JUNC_DEV or ADAPTIVE_SMOOTHING
+//#define DE200_EXPERIMENT_BASIC
+
+// BILINEAR / UNIFIED - Alternative bed levelling algorithms
 //#define DE200_EXPERIMENT_BED_BILINEAR
 //#define DE200_EXPERIMENT_BED_UNIFIED
+
+// Advanced movement functionality
 //#define DE200_EXPERIMENT_INPUT_SHAPING
 //#define DE200_EXPERIMENT_S_CURVE
-//#define DE200_EXPERIMENT_PID     // Revert to PID from more advanced MPC
-//#define DE200_EXPERIMENT_JUNC_DEV
-//#define DE200_EXPERIMENT_STATUS_ICONS
 //#define DE200_EXPERIMENT_ADAPTIVE_SMOOTHING
+
 //#define DE200_EXPERIMENT_FWRETRACT
+//#define DE200_EXPERIMENT_STATUS_ICONS
+
+// Revert single advanced function
+// PID rather than more advanced MPC
+//#define DE200_EXPERIMENT_PID
+//#define DE200_EXPERIMENT_CLASSIC_JERK
 
 
 /*
@@ -132,7 +146,7 @@
   #define DE200_EXTRUDER_STD
 #endif
 #if ENABLED(DE200_EXTRUDER_BICOLOR)
-  #define DE200_EXTRUDER_PLUS
+  #define DE200_EXTRUDER_PLUS // Bicolor implies Extruder+
 #endif
 
 #if NONE(DE200_ZSCREWS_STD, DE200_ZSCREWS_EXPERT, DE200_ZSCREWS_T8_8, DE200_ZSCREWS_T8_2)
@@ -154,8 +168,10 @@
   #define DE200_THERMISTOR_WHITE
 #endif
 
-#if NONE(DE200_PINOUT_STD, DE200_PINOUT_MKS)
-  #define DE200_PINOUT_STD
+#if NONE(DE200_MB_STD, DE200_MB_MKS15DAG, DE200_MB_MKS15STD, DE200_MB_DAGF5, DE200_MB_DAGD6)
+  #define DE200_MB_MKS15DAG
+#elif DEFINED(DE200_MB_STD)
+  #define DE200_MB_MKS15DAG
 #endif
 
 #if NONE(DE200_HEAD_STD, DE200_HEAD_STD_BLTOUCH, DE200_HEAD_Z122, DE200_HEAD_Z122_BLTOUCH)
@@ -171,8 +187,8 @@
   #define DE200_HEAD_BLTOUCH_ANY
 #endif
 
-#if NONE(DE200_EXPERIMENT_NONE, DE200_EXPERIMENT_BED_BILINEAR, DE200_EXPERIMENT_BED_UNIFIED, \
-  DE200_EXPERIMENT_INPUT_SHAPING, DE200_EXPERIMENT_S_CURVE, DE200_EXPERIMENT_PID, DE200_EXPERIMENT_JUNC_DEV, \
+#if NONE(DE200_EXPERIMENT_NONE, DE200_EXPERIMENT_BASIC, DE200_EXPERIMENT_BED_BILINEAR, DE200_EXPERIMENT_BED_UNIFIED, \
+  DE200_EXPERIMENT_INPUT_SHAPING, DE200_EXPERIMENT_S_CURVE, DE200_EXPERIMENT_PID, DE200_EXPERIMENT_CLASSIC_JERK, \
   DE200_EXPERIMENT_STATUS_ICONS, DE200_EXPERIMENT_ADAPTIVE_SMOOTHING, DE200_EXPERIMENT_FWRETRACT)
   #define DE200_EXPERIMENT_NONE
 #endif
@@ -233,20 +249,22 @@
     #define MACHINE_ABOUT_LINE2 "MK8-Extr."
   #endif
   // Advanced Marlin features
-  #if ENABLED(DE200_EXPERIMENT_INPUT_SHAPING)
+  #if ENABLED(DE200_EXPERIMENT_BASIC)
+    #define MACHINE_ABOUT_LINE3 "X:No adv. movement"
+  #elif ENABLED(DE200_EXPERIMENT_INPUT_SHAPING)
     #define MACHINE_ABOUT_LINE3 "X:Input Shaping"
   #elif ENABLED(DE200_EXPERIMENT_S_CURVE)
     #define MACHINE_ABOUT_LINE3 "X:S-Curve Accel."
-  #elif ENABLED(DE200_EXPERIMENT_PID)
-    #define MACHINE_ABOUT_LINE3 "X:Hotend-PID"
-  #elif ENABLED(DE200_EXPERIMENT_JUNC_DEV)
-    #define MACHINE_ABOUT_LINE3 "X:Juction Deviation"
   #elif ENABLED(DE200_EXPERIMENT_STATUS_ICONS)
     #define MACHINE_ABOUT_LINE3 "X:Status Icons"
   #elif ENABLED(DE200_EXPERIMENT_ADAPTIVE_SMOOTHING)
     #define MACHINE_ABOUT_LINE3 "X:Adaptive Smooth"
   #elif ENABLED(DE200_EXPERIMENT_FWRETRACT)
     #define MACHINE_ABOUT_LINE3 "X:Firmware Retract"
+  #elif ENABLED(DE200_EXPERIMENT_PID)
+    #define MACHINE_ABOUT_LINE3 "X:Hotend-PID"
+  #elif ENABLED(DE200_EXPERIMENT_CLASSIC_JERK)
+    #define MACHINE_ABOUT_LINE3 "X:Classic Jerk"
   #endif
 #endif
 
@@ -298,13 +316,19 @@
 
 // Choose the name from boards.h that matches your setup
 #ifndef MOTHERBOARD
-  #if ENABLED(DE200_PINOUT_MKS)
-    #define MOTHERBOARD BOARD_MKS_BASE_15
-  #elif ENABLED(DE200_PINOUT_STD)
+  #if ENABLED(DE200_MB_MKS15DAG)
     #define MOTHERBOARD BOARD_MKS_BASE_15_DAGOMA
+  #elif ENABLED(DE200_MB_MKS15STD)
+    #define MOTHERBOARD BOARD_MKS_BASE_15
+  #elif ENABLED(DE200_MB_DAGF5)
+    #define MOTHERBOARD BOARD_DAGOMA_F5
+  #elif ENABLED(DE200_MB_DAGD6)
+    #error "DE200_MOTHERBOARD Still looking for definitions for the Dagoma D6 motherboard"
   #else
-    #error "DE200_PINOUT unknown"
+    #error "DE200_MOTHERBOARD Unknown motherboard"
   #endif
+#else
+  #error "DE200_MOTHERBOARD Motherboard pre-defined"
 #endif
 
 /**
@@ -352,7 +376,16 @@
 //#define BLUETOOTH
 
 // Name displayed in the LCD "Ready" message and Info menu
-#define CUSTOM_MACHINE_NAME "DiscoEasy200"
+#if ANY(DE200_MB_MKS15DAG, DE200_MB_MKS15STD)
+  #define CUSTOM_MACHINE_NAME "DiscoEasy200"
+#elif ENABLED(DE200_MB_DAGF5)
+  #define CUSTOM_MACHINE_NAME "DiscoUltimate V1"
+#elif ENABLED(DE200_MB_DAGD6)
+  #define CUSTOM_MACHINE_NAME "DiscoUltimate V2TMC"
+#else
+  #error "DE200_MOTHERBOARD Unknown motherboard"
+#endif
+
 
 // Printer's unique ID, used by some programs to differentiate between machines.
 // Choose your own or use a service like https://www.uuidgenerator.net/version4
@@ -390,7 +423,9 @@
 //#define V_DRIVER_TYPE  A4988
 //#define W_DRIVER_TYPE  A4988
 #define E0_DRIVER_TYPE A4988
-//#define E1_DRIVER_TYPE A4988
+#if ENABLED(DE200_EXTRUDER_BICOLOR)
+  #define E1_DRIVER_TYPE A4988
+#endif
 //#define E2_DRIVER_TYPE A4988
 //#define E3_DRIVER_TYPE A4988
 //#define E4_DRIVER_TYPE A4988
@@ -1122,12 +1157,7 @@
  * Prevent a single extrusion longer than EXTRUDE_MAXLENGTH.
  * Note: For Bowden Extruders make this large enough to allow load/unload.
  */
-#define PREVENT_LENGTHY_EXTRUDE
-#if ENABLED(DE200_SCREEN_ANY)
-  #define EXTRUDE_MAXLENGTH FILAMENT_CHANGE_UNLOAD_LENGTH
-#else
-  #define EXTRUDE_MAXLENGTH (X_BED_SIZE+Y_BED_SIZE)
-#endif
+#define EXTRUDE_MAXLENGTH FILAMENT_CHANGE_UNLOAD_LENGTH
 
 //===========================================================================
 //======================== Thermal Runaway Protection =======================
@@ -1499,11 +1529,14 @@
  * Override with M92 (when enabled below)
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#if ENABLED(DE200_EXTRUDER_MX8)
+#if ANY(DE200_EXTRUDER_STD, DE200_EXTRUDER_PLUS, DE200_EXTRUDER_BICOLOR)
+  #define DE200_EXTRUDER_STEPS_MM 98
+#elif ENABLED(DE200_EXTRUDER_MX8)
   #define DE200_EXTRUDER_STEPS_MM 133
 #else
-  #define DE200_EXTRUDER_STEPS_MM 98
+  #error "DE200_EXTRUDER Unknown extruder"
 #endif
+
 #if ENABLED(DE200_ZSCREWS_STD)
   #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 2560, DE200_EXTRUDER_STEPS_MM }
 #elif ENABLED(DE200_ZSCREWS_EXPERT)
@@ -1513,7 +1546,7 @@
 #elif ENABLED(DE200_ZSCREWS_T8_8)
   #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80,  400, DE200_EXTRUDER_STEPS_MM }
 #else
-  #error "DE200_ZSCREWS unknown"
+  #error "DE200_ZSCREWS Unknown z-screws"
 #endif
 
 /**
@@ -1526,7 +1559,7 @@
  * Override with M203
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 500, 500, 5, 170 }
+#define DEFAULT_MAX_FEEDRATE          { 500, 500, 5, 170 } // Dagoma Z value 4
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
@@ -1571,7 +1604,7 @@
  * When changing speed and direction, if the difference is less than the
  * value set here, it may happen instantaneously.
  */
-#if DISABLED(DE200_EXPERIMENT_JUNC_DEV)
+#if ANY(DE200_EXPERIMENT_BASIC, DE200_EXPERIMENT_CLASSIC_JERK)
   #define CLASSIC_JERK
 #endif
 #if ENABLED(CLASSIC_JERK)

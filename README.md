@@ -51,6 +51,7 @@ with some of this functionality enabled
 
 **Hardware**
 
+***Dagoma Standard Hardware Options***
 * [x] Screen
 * [ ] No screen
 * [x] White Thermistor
@@ -58,52 +59,33 @@ with some of this functionality enabled
 * [ ] Extruder+
 * [ ] Bicolor
 * [ ] XL
-* [ ] Expert pack (T8-4)
-* [ ] T8-2
-* [ ] T8-8
-* [ ] Japanese / Cyrillic languages
+* [ ] Expert pack (T8-4 z-screws)
+* [x] MKS Base 1.5 Dagoma special pinouts
+* [x] Dagoma std probe
+
+***Community Hardware Options***
+* [ ] MKS Base 1.5 standard pinouts
+* [ ] MKS Base 1.5 standard pinouts + Extruder+
+* [ ] MKS Base 1.5 standard pinouts + Bicolor
+* [ ] Dagoma F5 MB (DiscoUltimate)
+* [ ] Dagoma D6 MB (DiscoUltimate V2 TMC)
+* [ ] T8-2 z-screws
+* [ ] T8-8 z-screws
 * [ ] Z122
-* [x] Dagoma special pinouts
-* [ ] MKS standard pinouts
-* [ ] MKS standard pinouts + Extruder+
-* [ ] MKS standard pinouts + Bicolor
 * [ ] Atelier3D Heated bed
-* [ ] Dagoma std probe
 * [ ] Bltouch
+* [ ] TouchMi
+* [ ] Japanese / Cyrillic languages
 
 At present only the stock D200 + LCD + White Thermistor has been tested,
 however all these standard Dagoma options are built automatically
-based on common configuration settings,
-so all functionality tested on the author's stock+LCD+White
+based on configuration settings taken from other Dagoma and community firmware,
+so all sofware functionality tested on the author's stock+LCD+White
 should work fine on these other variants and,
 until someone else has tested the different options
 and they are verified here,
 you do need to run some tests when you first load
 this firmware build onto your DE200.
-
-**Software**
-
-* [x] Homing
-* [x] G1 Printing
-* [ ] G2 (Arc) printing + ArcWelder
-* [x] Bed levelling - Linear
-* [ ] Bed levelling - Bilinear
-* [ ] Bed levelling - Unified
-* [x] Probe Z-offset Wizard
-* [x] Babysteps
-* [x] Filament Unload/Load/Change
-* [x] PID Temperature control
-* [x] MPC Temperature control
-* [x] Linear Advance
-* [x] Classic Jerk
-* [x] Junction Deviation
-* [ ] S-curve
-* [ ] Backlash
-* [ ] Input shaping
-* [ ] Meatpack
-* [ ] SD printing
-* [ ] Layer icon
-* [ ] Countdown icon
 
 The author is happy to support users **before** they load the firmware onto their
 system in order to ensure that it works for them,
@@ -114,9 +96,47 @@ then providing that we have access to the source code
 we can almost certainly get the settings we need to make this build
 to support your specific machine.
 
-Some combinations of these options with Standard builds are compiled automatically for each release,
-but an individual build for a single combination of any of these options can be manually initiated and
-built automatically using the same Github Actions workflow.
+**Software**
+
+* [x] Homing
+* [x] G1 Printing
+* [ ] G2 (Arc) printing + ArcWelder
+* [x] Bed levelling - Linear
+* [ ] Bed levelling - Bilinear
+* [ ] Bed levelling - Unified
+* [x] Probe Z-offset Wizard
+* [x] Z-Babysteps
+* [x] Filament Unload/Load/Change
+* [x] PID Temperature control
+* [x] MPC Temperature control
+* [x] Linear Advance
+* [x] Classic Jerk
+* [x] Junction Deviation
+* [ ] S-curve
+* [ ] Backlash
+* [ ] Input shaping
+* [ ] Adaptive_Smoothing
+* [ ] Firmware Retraction
+* [ ] Meatpack
+* [x] SD Media support
+* [ ] SD printing with LCD
+* [ ] SD printing no LCD
+* [ ] M73 progress support
+* [ ] Layer counter icon
+* [ ] Countdown timer icon
+
+The non-experimental builds only contain tested software functionality,
+so providing the hardware options you want have been tested,
+then you can be reasonably confident that the firmware should
+work on your machine.
+
+Single untested "experimental" software functions are automatically build
+in combination with a vanilla hardware base
+so that these options can be tested by the author,
+however a build for the same "experimental" software function
+with any hardware combination of any of these options
+can be manually initiated and built automatically
+using the same Github Actions workflow.
 
 ### Documentation
 

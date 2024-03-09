@@ -35,9 +35,9 @@ jobs:
         size:       [STD]
         thermistor: [WHITE]
         warping:    [STD]
-        pinout:     [STD]
+        mb:         [STD]
         head:       [STD]
-        experiment: [NONE, BED_BILINEAR, BED_UNIFIED, INPUT_SHAPING, S_CURVE, PID, JUNC_DEV, ADAPTIVE_SMOOTHING, FWRETRACT] # STATUS_ICONS
+        experiment: [NONE, BASIC, BED_BILINEAR, BED_UNIFIED, INPUT_SHAPING, S_CURVE, PID, CLASSIC_JERK, ADAPTIVE_SMOOTHING, FWRETRACT] # STATUS_ICONS
     permissions:
       contents: write
     uses: ./.github/workflows/build_single.yaml
@@ -49,7 +49,7 @@ jobs:
       size:       ${{ matrix.size }}
       thermistor: ${{ matrix.thermistor }}
       warping:    ${{ matrix.warping }}
-      pinout:     ${{ matrix.pinout }}
+      mb:         ${{ matrix.mb }}
       head:       ${{ matrix.head }}
       experiment: ${{ matrix.experiment }}
     secrets: inherit
@@ -68,18 +68,18 @@ jobs:
         size:       [STD, XL]
         thermistor: [WHITE, BLACK]
         warping:    [STD, BED_ATELIER3D]
-        pinout:     [STD, MKS]
+        mb:         [STD, MKS15STD]
         head:       [STD, Z122]
         experiment: [NONE]
         exclude:
-          - pinout:   MKS       # Pinout for Extruder 2 not defined in standard MKS_BASE_1.5
+          - mb:       MKS15STD       # Pinout for Extruder 2 not defined in standard MKS15STD_BASE_1.5
             extruder: BICOLOR
           - extruder:     STD
             zscrews:      STD
             size:         STD
             thermistor:   WHITE
             warping:      STD
-            pinout:       STD
+            mb:           STD
             head:         STD
     permissions:
       contents: write
@@ -92,7 +92,7 @@ jobs:
       size:       ${{ matrix.size }}
       thermistor: ${{ matrix.thermistor }}
       warping:    ${{ matrix.warping }}
-      pinout:     ${{ matrix.pinout }}
+      mb:         ${{ matrix.mb }}
       head:       ${{ matrix.head }}
       experiment: ${{ matrix.experiment }}
     secrets: inherit
@@ -111,12 +111,12 @@ jobs:
         size:       [STD, XL]
         thermistor: [WHITE, BLACK]
         warping:    [STD, BED_ATELIER3D]
-        pinout:     [STD, MKS]
+        mb:         [STD, MKS15STD]
         head:       [STD, Z122]
         experiment: [NONE]
         exclude:
-          - pinout:   MKS
-            extruder: BICOLOR   # Pinout for Extruder 2 not defined in standard MKS_BASE_1.5
+          - mb:       MKS15STD
+            extruder: BICOLOR   # Pinout for Extruder 2 not defined in standard MKS15STD_BASE_1.5
     permissions:
       contents: write
     uses: ./.github/workflows/build_single.yaml
@@ -128,7 +128,7 @@ jobs:
       size:       ${{ matrix.size }}
       thermistor: ${{ matrix.thermistor }}
       warping:    ${{ matrix.warping }}
-      pinout:     ${{ matrix.pinout }}
+      mb:         ${{ matrix.mb }}
       head:       ${{ matrix.head }}
       experiment: ${{ matrix.experiment }}
     secrets: inherit
@@ -147,12 +147,12 @@ jobs:
         size:       [STD, XL]
         thermistor: [WHITE, BLACK]
         warping:    [STD, BED_ATELIER3D]
-        pinout:     [STD, MKS]
+        mb:         [STD, MKS15STD]
         head:       [STD, Z122]
         experiment: [NONE]
         exclude:
-          - pinout:   MKS
-            extruder: BICOLOR   # Pinout for Extruder 2 not defined in standard MKS_BASE_1.5
+          - mb:       MKS15STD
+            extruder: BICOLOR   # Pinout for Extruder 2 not defined in standard MKS15STD_BASE_1.5
     permissions:
       contents: write
     uses: ./.github/workflows/build_single.yaml
@@ -164,7 +164,7 @@ jobs:
       size:       ${{ matrix.size }}
       thermistor: ${{ matrix.thermistor }}
       warping:    ${{ matrix.warping }}
-      pinout:     ${{ matrix.pinout }}
+      mb:         ${{ matrix.mb }}
       head:       ${{ matrix.head }}
       experiment: ${{ matrix.experiment }}
     secrets: inherit
@@ -180,10 +180,10 @@ jobs:
         zscrews:    [STD]
         size:       [STD]
         thermistor: [WHITE, BLACK]
-        warping:    [STD, BED_ATELIER3D]
-        pinout:     [STD]
+        warping:    [STD]
+        mb:         [STD]
         head:       [STD]
-        experiment: [NONE]
+        experiment: [NONE, BASIC]
     permissions:
       contents: write
     uses: ./.github/workflows/build_single.yaml
@@ -195,7 +195,7 @@ jobs:
       size:       ${{ matrix.size }}
       thermistor: ${{ matrix.thermistor }}
       warping:    ${{ matrix.warping }}
-      pinout:     ${{ matrix.pinout }}
+      mb:         ${{ matrix.mb }}
       head:       ${{ matrix.head }}
       experiment: ${{ matrix.experiment }}
     secrets: inherit
@@ -214,12 +214,12 @@ jobs:
         # size:       [STD]
         # thermistor: [WHITE]
         # warping:    [BED_ATELIER3D]
-        # pinout:     [MKS]
+        # mb:         [MKS15STD]
         # head:       [STD-BLTOUCH]
         # experiment: [NONE]
         # exclude:
-          # - pinout: MKS
-            # extruder: BICOLOR   # Pinout for Extruder 2 not defined in standard MKS_BASE_1.5
+          # - mb:     MKS15STD
+            # extruder: BICOLOR   # Pinout for Extruder 2 not defined in standard MKS15STD_BASE_1.5
     # permissions:
       # contents: write
     # uses: ./.github/workflows/build_single.yaml
@@ -231,7 +231,7 @@ jobs:
       # size:       ${{ matrix.size }}
       # thermistor: ${{ matrix.thermistor }}
       # warping:    ${{ matrix.warping }}
-      # pinout:     ${{ matrix.pinout }}
+      # mb:         ${{ matrix.mb }}
       # head:       ${{ matrix.head }}
       # experiment: ${{ matrix.experiment }}
     # secrets: inherit

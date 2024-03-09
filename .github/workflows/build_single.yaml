@@ -78,9 +78,9 @@ on:
         required: true
         type: choice
         default: STD
-      pinout:
-        description: 'Pinout (Std, MKS):'
-        options: [STD, MKS]
+      mb:
+        description: 'Motherboard (STD = MKS1.5 Dagoma pinout, MKS1.5 Std pinout):'
+        options: [STD, MKS15STD] # DAGF5, DAGD6
         required: true
         type: choice
         default: STD
@@ -92,7 +92,7 @@ on:
         default: STD
       experiment:
         description: 'experiment features:'
-        options: [NONE, BED_BILINEAR, BED_UNIFIED, INPUT_SHAPING, S_CURVE, PID, JUNC_DEV, STATUS_ICONS, ADAPTIVE_SMOOTHING, FWRETRACT]
+        options: [NONE, BASIC, BED_BILINEAR, BED_UNIFIED, INPUT_SHAPING, S_CURVE, PID, CLASSIC_JERK, STATUS_ICONS, ADAPTIVE_SMOOTHING, FWRETRACT]
         required: true
         type: choice
         default: NONE
@@ -127,8 +127,8 @@ on:
         description: 'Anti-Warping (Std, Atelier3D):'
         required: true
         type: string
-      pinout:
-        description: 'Pinout (Std, MKS):'
+      mb:
+        description: 'Motherboard (STD = MKS1.5 Dagoma pinout, MKS1.5 Std pinout):'
         required: true
         type: string
       head:
@@ -150,7 +150,7 @@ concurrency:
     -size:${{ inputs.size }}\
     -thermistor:${{ inputs.thermistor }}\
     -warping:${{ inputs.warping }}\
-    -pinout:${{ inputs.pinout }}\
+    -mb:${{ inputs.mb }}\
     -head:${{ inputs.head }}\
     -experiment:${{ inputs.experiment }}\
     "
@@ -159,9 +159,10 @@ concurrency:
 jobs:
   build:
     env:
-      BUILD_FILE: ${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}{19}',
-        'DE200_2.1.2.2-',
-        (inputs.screen       == 'NONE'  && 'NoLCD') || inputs.lang,
+      BUILD_FILE: ${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}{19}{20}',
+        (inputs.mb           == 'DAGF5' && 'Ultim') || (inputs.mb == 'DAGD6' && 'Ultv2') || 'DE200',
+        '_2.1.x-',
+        (inputs.screen       == 'NONE'  && 'noLCD') || inputs.lang,
         (inputs.screen       != 'NONE'  && inputs.screen != 'STD' && '-') || '',
         (inputs.screen       != 'NONE'  && inputs.screen != 'STD' && inputs.screen) || '',
         (inputs.extruder     != 'STD'   && '-') || '',
@@ -174,8 +175,8 @@ jobs:
         (inputs.thermistor   != 'WHITE' && inputs.thermistor) || '',
         (inputs.warping      != 'STD'   && '-') || '',
         (inputs.warping      != 'STD'   && inputs.warping) || '',
-        (inputs.pinout       != 'STD'   && '-') || '',
-        (inputs.pinout       != 'STD'   && inputs.pinout) || '',
+        (inputs.mb           != 'STD'   && '-') || '',
+        (inputs.mb           != 'STD'   && inputs.mb) || '',
         (inputs.head         != 'STD'   && '-') || '',
         (inputs.head         != 'STD'   && inputs.head) || '',
         (inputs.experiment   != 'NONE'  && '-EXPERIMENTAL-') || '',
@@ -189,7 +190,7 @@ jobs:
       size:${{ inputs.size }}
       thermistor:${{ inputs.thermistor }}
       warp:${{ inputs.warping }}
-      pinout:${{ inputs.pinout }}
+      mb:${{ inputs.mb }}
       head:${{ inputs.head }}
       exp:${{ inputs.experiment }}
       "
@@ -224,7 +225,7 @@ jobs:
           -D DE200_SIZE_${{ inputs.size }}
           -D DE200_THERMISTOR_${{ inputs.thermistor }}
           -D DE200_WARPING_${{ inputs.warping }}
-          -D DE200_PINOUT_${{ inputs.pinout }}
+          -D DE200_MB_${{ inputs.mb }}
           -D DE200_HEAD_${{ inputs.head }}
           -D DE200_EXPERIMENT_${{ inputs.experiment }}\
           "
