@@ -1219,11 +1219,11 @@
   #else // Only std head has measured damping factor, otherwise set off (user can set them to non-zero)
     #if ENABLED(INPUT_SHAPING_X)
       #define SHAPING_FREQ_X  0         // (Hz) The default dominant resonant frequency on the X axis.
-      #define SHAPING_ZETA_X  0         // Damping ratio of the X axis (range: 0.0 = no damping to 1.0 = critical damping).
+      #define SHAPING_ZETA_X  0.00f     // Damping ratio of the X axis (range: 0.0 = no damping to 1.0 = critical damping).
     #endif
     #if ENABLED(INPUT_SHAPING_Y)
       #define SHAPING_FREQ_Y  0         // (Hz) The default dominant resonant frequency on the Y axis.
-      #define SHAPING_ZETA_Y  0         // Damping ratio of the Y axis (range: 0.0 = no damping to 1.0 = critical damping).
+      #define SHAPING_ZETA_Y  0.00f     // Damping ratio of the Y axis (range: 0.0 = no damping to 1.0 = critical damping).
     #endif
   #endif
   //#define SHAPING_MIN_FREQ  20        // By default the minimum of the shaping frequencies. Override to affect SRAM usage.
