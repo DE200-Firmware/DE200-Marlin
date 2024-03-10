@@ -930,7 +930,7 @@
 #define HOMING_BUMP_MM      { 5, 5, 1 }       // (linear=mm, rotational=°) Backoff from endstops after first bump
 #define HOMING_BUMP_DIVISOR { 5, 5, 5 }       // Re-Bump Speed Divisor (Divides the Homing Feedrate)
 
-//#define HOMING_BACKOFF_POST_MM { 2, 2, 2 }  // (linear=mm, rotational=°) Backoff from endstops after homing
+#define HOMING_BACKOFF_POST_MM { 5, 5, 5 }  // (linear=mm, rotational=°) Backoff from endstops after homing
 //#define XY_COUNTERPART_BACKOFF_MM 0         // (mm) Backoff X after homing Y, and vice-versa
 
 //#define QUICK_HOME                          // If G28 contains XY do a diagonal move first
@@ -1207,17 +1207,28 @@
   #define INPUT_SHAPING_Y
 #endif
 #if ANY(INPUT_SHAPING_X, INPUT_SHAPING_Y)
-  #if ENABLED(INPUT_SHAPING_X)
-    #define SHAPING_FREQ_X  40          // (Hz) The default dominant resonant frequency on the X axis.
-    #define SHAPING_ZETA_X  0.15f       // Damping ratio of the X axis (range: 0.0 = no damping to 1.0 = critical damping).
-  #endif
-  #if ENABLED(INPUT_SHAPING_Y)
-    #define SHAPING_FREQ_Y  40          // (Hz) The default dominant resonant frequency on the Y axis.
-    #define SHAPING_ZETA_Y  0.15f       // Damping ratio of the Y axis (range: 0.0 = no damping to 1.0 = critical damping).
+  #if ENABLED(DE200_HEAD_STD)
+    #if ENABLED(INPUT_SHAPING_X)
+      #define SHAPING_FREQ_X  38        // (Hz) The default dominant resonant frequency on the X axis.
+      #define SHAPING_ZETA_X  0.10f     // Damping ratio of the X axis (range: 0.0 = no damping to 1.0 = critical damping).
+    #endif
+    #if ENABLED(INPUT_SHAPING_Y)
+      #define SHAPING_FREQ_Y  31        // (Hz) The default dominant resonant frequency on the Y axis.
+      #define SHAPING_ZETA_Y  0.10f     // Damping ratio of the Y axis (range: 0.0 = no damping to 1.0 = critical damping).
+    #endif
+  #else // Only std head has measured damping factor, otherwise use Marlin defaults
+    #if ENABLED(INPUT_SHAPING_X)
+      #define SHAPING_FREQ_X  40        // (Hz) The default dominant resonant frequency on the X axis.
+      #define SHAPING_ZETA_X  0.15f     // Damping ratio of the X axis (range: 0.0 = no damping to 1.0 = critical damping).
+    #endif
+    #if ENABLED(INPUT_SHAPING_Y)
+      #define SHAPING_FREQ_Y  40        // (Hz) The default dominant resonant frequency on the Y axis.
+      #define SHAPING_ZETA_Y  0.15f     // Damping ratio of the Y axis (range: 0.0 = no damping to 1.0 = critical damping).
+    #endif
   #endif
   //#define SHAPING_MIN_FREQ  20        // By default the minimum of the shaping frequencies. Override to affect SRAM usage.
   //#define SHAPING_MAX_STEPRATE 10000  // By default the maximum total step rate of the shaped axes. Override to affect SRAM usage.
-  //#define SHAPING_MENU                // Add a menu to the LCD to set shaping parameters.
+  #define SHAPING_MENU                  // Add a menu to the LCD to set shaping parameters.
 #endif
 
 // @section motion
@@ -2948,7 +2959,7 @@
   #define PAUSE_PARK_RETRACT_LENGTH            4.5  // (mm) Initial retract.
                                                   // This short retract is done immediately, before parking the nozzle.
   #define FILAMENT_CHANGE_UNLOAD_FEEDRATE    150  // (mm/s) Unload filament feedrate. This can be pretty fast.
-  #define FILAMENT_CHANGE_UNLOAD_ACCEL        25  // (mm/s^2) Lower acceleration may allow a faster feedrate.
+  #define FILAMENT_CHANGE_UNLOAD_ACCEL        50  // (mm/s^2) Lower acceleration may allow a faster feedrate.
   #define FILAMENT_CHANGE_UNLOAD_LENGTH      950  // (mm) The length of filament for a complete unload.
                                                   //   For Bowden, the full length of the tube and nozzle.
                                                   //   For direct drive, the full length of the nozzle.
@@ -2958,7 +2969,7 @@
                                                   // DE200 40mm gets the filament through the extruder and into the bowden tube
                                                   // 0 to disable start loading and skip to fast load only
   #define FILAMENT_CHANGE_FAST_LOAD_FEEDRATE 100  // (mm/s) Load filament feedrate. This can be pretty fast.
-  #define FILAMENT_CHANGE_FAST_LOAD_ACCEL     25  // (mm/s^2) Lower acceleration may allow a faster feedrate.
+  #define FILAMENT_CHANGE_FAST_LOAD_ACCEL     50  // (mm/s^2) Lower acceleration may allow a faster feedrate.
   #define FILAMENT_CHANGE_FAST_LOAD_LENGTH   845  // (mm) Load length of filament, from extruder gear to nozzle.
                                                   //   For Bowden, the full length of the tube and nozzle.
                                                   //   For direct drive, the full length of the nozzle.
