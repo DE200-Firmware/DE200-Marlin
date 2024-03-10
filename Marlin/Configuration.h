@@ -1016,7 +1016,7 @@
   // For one fan and multiple hotends MPC needs to know how to apply the fan cooling effect.
   #if ENABLED(MPC_INCLUDE_FAN)
     //#define MPC_FAN_0_ALL_HOTENDS
-    //#define MPC_FAN_0_ACTIVE_HOTEND
+    #define MPC_FAN_0_ACTIVE_HOTEND
   #endif
 
   // Filament Heat Capacity (joules/kelvin/mm)
@@ -1712,7 +1712,9 @@
  * A Fix-Mounted Probe either doesn't deploy or needs manual deployment.
  *   (e.g., an inductive probe or a nozzle-based probe-switch.)
  */
-#define FIX_MOUNTED_PROBE
+#if NONE(DE200_HEAD_BLTOUCH_ANY)
+  #define FIX_MOUNTED_PROBE
+#endif
 
 /**
  * Use the nozzle as the probe, as with a conductive
