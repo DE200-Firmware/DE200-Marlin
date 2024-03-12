@@ -1572,7 +1572,7 @@
  * Override with M201
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 3000, 1000, 20, 10000 }
+#define DEFAULT_MAX_ACCELERATION      { 3000, 1500, 25, 10000 }
 
 //#define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)
@@ -2006,13 +2006,18 @@
  * Example: `M851 Z-5` with a CLEARANCE of 4  =>  9mm from bed to nozzle.
  *     But: `M851 Z+1` with a CLEARANCE of 2  =>  2mm from bed to nozzle.
  */
-#define Z_CLEARANCE_DEPLOY_PROBE   10 // (mm) Z Clearance for Deploy/Stow
-#define Z_CLEARANCE_BETWEEN_PROBES  5 // (mm) Z Clearance between probe points
-#define Z_CLEARANCE_MULTI_PROBE     2 // (mm) Z Clearance between multiple probes >= 2
-#define Z_PROBE_ERROR_TOLERANCE     3 // (mm) Tolerance for early trigger (<= -probe.offset.z + ZPET)
-//#define Z_AFTER_PROBING           5 // (mm) Z position after probing is done
+// This should probably match the value of Z_CLEARANCE_FOR_HOMING set c. 120 lines below
+#if ANY(DE200_HEAD_BLTOUCH_ANY, DE200_HEAD_TOUCHMI_ANY)
+  #define Z_CLEARANCE_DEPLOY_PROBE   10 // (mm) Z Clearance for Deploy/Stow
+#else
+  #define Z_CLEARANCE_DEPLOY_PROBE    5 // (mm) Z Clearance for Deploy/Stow
+#endif
+#define Z_CLEARANCE_BETWEEN_PROBES  5   // (mm) Z Clearance between probe points
+#define Z_CLEARANCE_MULTI_PROBE     2   // (mm) Z Clearance between multiple probes >= 2
+#define Z_PROBE_ERROR_TOLERANCE     3   // (mm) Tolerance for early trigger (<= -probe.offset.z + ZPET)
+#define Z_AFTER_PROBING             5   // (mm) Z position after probing is done
 
-#define Z_PROBE_LOW_POINT          -2 // (mm) Farthest distance below the trigger-point to go before stopping
+#define Z_PROBE_LOW_POINT          -5 // (mm) Farthest distance below the trigger-point to go before stopping
 
 // For M851 provide ranges for adjusting the X, Y, and Z probe offsets
 //#define PROBE_OFFSET_XMIN -50   // (mm)
@@ -2125,9 +2130,13 @@
  */
 //#define Z_IDLE_HEIGHT Z_HOME_POS
 
-//#define Z_CLEARANCE_FOR_HOMING  4   // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
-                                      // You'll need this much clearance above Z_MAX_POS to avoid grinding.
-
+// (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
+// You'll need this much clearance above Z_MAX_POS to avoid grinding.
+#if ANY(DE200_HEAD_BLTOUCH_ANY, DE200_HEAD_TOUCHMI_ANY)
+  #define Z_CLEARANCE_FOR_HOMING   10 // Minimum for TouchMI is 10mm
+#else
+  #define Z_CLEARANCE_FOR_HOMING    5 // Minimum for stock probe is 5mm (to allow for bed skew cf. gantry / Y guide rods
+#endif
 //#define Z_AFTER_HOMING         10   // (mm) Height to move to after homing (if Z was homed)
 //#define XY_AFTER_HOMING { 10, 10 }  // (mm) Move to an XY position after homing (and raising Z)
 
@@ -2166,10 +2175,10 @@
 // Note: Because of integer centre calculations, bed sizes need to be even integers
 #if ALL(DE200_HEAD_STD_ANY, DE200_SIZE_STD)
   #define X_BED_SIZE 204
-  #define Y_BED_SIZE 204
+  #define Y_BED_SIZE 202
 #elif ALL(DE200_HEAD_STD_ANY, DE200_SIZE_XL)
   #define X_BED_SIZE 298
-  #define Y_BED_SIZE 204
+  #define Y_BED_SIZE 202
 #elif ALL(DE200_HEAD_Z122_ANY, DE200_SIZE_STD)
   #define X_BED_SIZE 182
   #define Y_BED_SIZE 184
@@ -2186,7 +2195,7 @@
 #define Z_MIN_POS 0
 #define X_MAX_POS X_BED_SIZE
 #define Y_MAX_POS Y_BED_SIZE
-#define Z_MAX_POS 211
+#define Z_MAX_POS (210 - Z_CLEARANCE_FOR_HOMING)
 //#define I_MIN_POS 0
 //#define I_MAX_POS 50
 //#define J_MIN_POS 0
@@ -2817,7 +2826,7 @@
   // Specify a park position as { X, Y, Z_raise }
   #define NOZZLE_PARK_POINT { (X_MIN_POS + 10), (Y_MAX_POS - 10), 20 }
   #define NOZZLE_PARK_MOVE          0   // Park motion: 0 = XY Move, 1 = X Only, 2 = Y Only, 3 = X before Y, 4 = Y before X
-  #define NOZZLE_PARK_Z_RAISE_MIN   7   // (mm) Always raise Z by at least this distance
+  #define NOZZLE_PARK_Z_RAISE_MIN   5   // (mm) Always raise Z by at least this distance
   #define NOZZLE_PARK_XY_FEEDRATE 100   // (mm/s) X and Y axes feedrate (also used for delta Z axis)
   #define NOZZLE_PARK_Z_FEEDRATE    5   // (mm/s) Z axis feedrate (not used for delta printers)
 #endif
