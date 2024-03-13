@@ -92,7 +92,7 @@ on:
         default: STD
       debug:
         description: 'Debug features:'
-        options: [NONE, BASIC, BED_BILINEAR, BED_UNIFIED, PID, CLASSIC_JERK, NO_S_CURVE, NO_XY_FREQ, ADAPTIVE_SMOOTHING, STATUS_ICONS]
+        options: [NONE, BASIC, SERIAL_DEBUG, BED_BILINEAR, BED_UNIFIED, PID, CLASSIC_JERK, NO_S_CURVE, NO_XY_FREQ, ADAPTIVE_SMOOTHING, STATUS_ICONS]
         required: true
         type: choice
         default: NONE

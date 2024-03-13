@@ -3947,7 +3947,9 @@
 /**
  * Extra options for the M114 "Current Position" report
  */
-#define M114_DETAIL         // Use 'M114` for details to check planner calculations
+#if ENABLED(DE200_DEBUG_SERIAL_DEBUG)
+  #define M114_DETAIL         // Use 'M114` for details to check planner calculations
+#endif
 //#define M114_REALTIME       // Real current position based on forward kinematics
 //#define M114_LEGACY         // M114 used to synchronize on every call. Enable if needed.
 
@@ -3984,7 +3986,7 @@
   // Include capabilities in M115 output
   #define EXTENDED_CAPABILITIES_REPORT
   #if ENABLED(EXTENDED_CAPABILITIES_REPORT)
-    //#define M115_GEOMETRY_REPORT
+    #define M115_GEOMETRY_REPORT
   #endif
 #endif
 
@@ -4013,7 +4015,9 @@
  * Enable M111 debug flags 1=ECHO, 2=INFO, 4=ERRORS (unimplemented).
  * Disable to save some flash. Some hosts (Repetier Host) may rely on this feature.
  */
-#define DEBUG_FLAGS_GCODE
+#if ENABLED(DE200_DEBUG_SERIAL_DEBUG)
+  #define DEBUG_FLAGS_GCODE
+#endif
 
 /**
  * Enable this option for a leaner build of Marlin that removes
