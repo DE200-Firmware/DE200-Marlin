@@ -1202,12 +1202,12 @@
  *  X<1>         Set the given parameters only for the X axis.
  *  Y<1>         Set the given parameters only for the Y axis.
  */
-#if ENABLED(DE200_EXPERIMENT_INPUT_SHAPING)
+#if NONE(DE200_DEBUG_BASIC)
   #define INPUT_SHAPING_X
   #define INPUT_SHAPING_Y
 #endif
 #if ANY(INPUT_SHAPING_X, INPUT_SHAPING_Y)
-  #if ENABLED(DE200_HEAD_STD)
+  #if ENABLED(DE200_HEAD_STD, DE200_SIZE_STD)
     #if ENABLED(INPUT_SHAPING_X)
       #define SHAPING_FREQ_X  38        // (Hz) The default dominant resonant frequency on the X axis.
       #define SHAPING_ZETA_X  0.10f     // Damping ratio of the X axis (range: 0.0 = no damping to 1.0 = critical damping).
@@ -1287,7 +1287,7 @@
  * See https://hydraraptor.blogspot.com/2010/12/frequency-limit.html
  * Use M201 F<freq> S<min%> to change limits at runtime.
  */
-#if DISABLED(DE200_EXPERIMENT_BASIC)
+#if NONE(DE200_DEBUG_BASIC, DE200_DEBUG_NO_XY_FREQ)
   #define XY_FREQUENCY_LIMIT      10 // (Hz) Maximum frequency of small zigzag infill moves. Set with M201 F<hertz>.
 #endif
 #ifdef XY_FREQUENCY_LIMIT
@@ -1411,7 +1411,7 @@
  * vibration and surface artifacts. The algorithm adapts to provide the best possible step smoothing at the
  * lowest stepping frequencies.
  */
-#if ENABLED(DE200_EXPERIMENT_ADAPTIVE_SMOOTHING)
+#if ENABLED(DE200_DEBUG_ADAPTIVE_SMOOTHING)
   #define ADAPTIVE_STEP_SMOOTHING
 #endif
 
@@ -2355,7 +2355,7 @@
  *
  * See https://marlinfw.org/docs/features/lin_advance.html for full instructions.
  */
-#if DISABLED(DE200_EXPERIMENT_BASIC)
+#if NONE(DE200_DEBUG_BASIC)
   #define LIN_ADVANCE
 #endif
 #if ENABLED(LIN_ADVANCE)
@@ -2802,9 +2802,7 @@
  *
  * Note that M207 / M208 / M209 settings are saved to EEPROM.
  */
-#if ENABLED(DE200_EXPERIMENT_FWRETRACT)
-  #define FWRETRACT
-#endif
+#define FWRETRACT
 #if ENABLED(FWRETRACT)
   //#define FWRETRACT_AUTORETRACT             // Override slicer retractions
   #if ENABLED(FWRETRACT_AUTORETRACT)
@@ -4071,7 +4069,7 @@
 // @section custom main menu
 
 // Custom Menu: Main Menu
-#if ANY(DE200_EXPERIMENT_BED_BILINEAR, DE200_EXPERIMENT_BED_UNIFIED)
+#if ANY(DE200_DEBUG_BED_BILINEAR, DE200_DEBUG_BED_UNIFIED)
   #define CUSTOM_MENU_MAIN
 #endif
 #if ENABLED(CUSTOM_MENU_MAIN)

@@ -90,9 +90,9 @@ on:
         required: true
         type: choice
         default: STD
-      experiment:
-        description: 'experiment features:'
-        options: [NONE, BASIC, BED_BILINEAR, BED_UNIFIED, INPUT_SHAPING, S_CURVE, PID, CLASSIC_JERK, STATUS_ICONS, ADAPTIVE_SMOOTHING, FWRETRACT]
+      debug:
+        description: 'Debug features:'
+        options: [NONE, BASIC, BED_BILINEAR, BED_UNIFIED, PID, CLASSIC_JERK, NO_S_CURVE, NO_XY_FREQ, ADAPTIVE_SMOOTHING, STATUS_ICONS]
         required: true
         type: choice
         default: NONE
@@ -135,8 +135,8 @@ on:
         description: 'Print head (Std, Z122):'
         required: true
         type: string
-      experiment:
-        description: 'experiment Marlin features:'
+      debug:
+        description: 'debug Marlin features:'
         required: true
         type: string
 
@@ -152,7 +152,7 @@ concurrency:
     -warping:${{ inputs.warping }}\
     -mb:${{ inputs.mb }}\
     -head:${{ inputs.head }}\
-    -experiment:${{ inputs.experiment }}\
+    -debug:${{ inputs.debug }}\
     "
   cancel-in-progress: true
 
@@ -160,27 +160,27 @@ jobs:
   build:
     env:
       BUILD_FILE: ${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}{19}{20}',
-        (inputs.mb           == 'DAGF5' && 'Ultim') || (inputs.mb == 'DAGD6' && 'Ultv2') || 'DE200',
+        (inputs.mb         == 'DAGF5' && 'Ultim') || (inputs.mb == 'DAGD6' && 'Ultv2') || 'DE200',
         '_2.1.x-',
-        (inputs.screen       == 'NONE'  && 'noLCD') || inputs.lang,
-        (inputs.screen       != 'NONE'  && inputs.screen != 'STD' && '-') || '',
-        (inputs.screen       != 'NONE'  && inputs.screen != 'STD' && inputs.screen) || '',
-        (inputs.extruder     != 'STD'   && '-') || '',
-        (inputs.extruder     != 'STD'   && inputs.extruder) || '',
-        (inputs.zscrews      != 'STD'   && '-') || '',
-        (inputs.zscrews      != 'STD'   && inputs.zscrews) || '',
-        (inputs.size         != 'STD'   && '-') || '',
-        (inputs.size         != 'STD'   && inputs.size) || '',
-        (inputs.thermistor   != 'WHITE' && '-') || '',
-        (inputs.thermistor   != 'WHITE' && inputs.thermistor) || '',
-        (inputs.warping      != 'STD'   && '-') || '',
-        (inputs.warping      != 'STD'   && inputs.warping) || '',
-        (inputs.mb           != 'STD'   && '-') || '',
-        (inputs.mb           != 'STD'   && inputs.mb) || '',
-        (inputs.head         != 'STD'   && '-') || '',
-        (inputs.head         != 'STD'   && inputs.head) || '',
-        (inputs.experiment   != 'NONE'  && '-EXPERIMENTAL-') || '',
-        (inputs.experiment   != 'NONE'  && inputs.experiment) || ''
+        (inputs.screen     == 'NONE'  && 'noLCD') || inputs.lang,
+        (inputs.screen     != 'NONE'  && inputs.screen != 'STD' && '-') || '',
+        (inputs.screen     != 'NONE'  && inputs.screen != 'STD' && inputs.screen) || '',
+        (inputs.extruder   != 'STD'   && '-') || '',
+        (inputs.extruder   != 'STD'   && inputs.extruder) || '',
+        (inputs.zscrews    != 'STD'   && '-') || '',
+        (inputs.zscrews    != 'STD'   && inputs.zscrews) || '',
+        (inputs.size       != 'STD'   && '-') || '',
+        (inputs.size       != 'STD'   && inputs.size) || '',
+        (inputs.thermistor != 'WHITE' && '-') || '',
+        (inputs.thermistor != 'WHITE' && inputs.thermistor) || '',
+        (inputs.warping    != 'STD'   && '-') || '',
+        (inputs.warping    != 'STD'   && inputs.warping) || '',
+        (inputs.mb         != 'STD'   && '-') || '',
+        (inputs.mb         != 'STD'   && inputs.mb) || '',
+        (inputs.head       != 'STD'   && '-') || '',
+        (inputs.head       != 'STD'   && inputs.head) || '',
+        (inputs.debug      != 'NONE'  && '-DEBUG-') || '',
+        (inputs.debug      != 'NONE'  && inputs.debug) || ''
         ) }}
     name: "Build:
       ${{ (inputs.screen == 'NONE' && 'nolcd') || inputs.lang }}
@@ -192,7 +192,7 @@ jobs:
       warp:${{ inputs.warping }}
       mb:${{ inputs.mb }}
       head:${{ inputs.head }}
-      exp:${{ inputs.experiment }}
+      debug:${{ inputs.debug }}
       "
     runs-on: ubuntu-latest
     steps:
@@ -232,7 +232,7 @@ jobs:
           -D DE200_WARPING_${{ inputs.warping }}
           -D DE200_MB_${{ inputs.mb }}
           -D DE200_HEAD_${{ inputs.head }}
-          -D DE200_EXPERIMENT_${{ inputs.experiment }}\
+          -D DE200_DEBUG_${{ inputs.debug }}\
           "
 
     - name: Post build script

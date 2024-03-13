@@ -103,30 +103,29 @@
 //#define DE200_HEAD_Z122
 //#define DE200_HEAD_Z122_BLTOUCH
 
-// DE200_EXPERIMENT_* - default NONE; available NONE, BASIC, BED_BILINEAR, INPUT_SHAPING, S_CURVE, PID, CLASSIC_JERK, STATUS_ICONS, ADAPTIVE_SMOOTHING, FWRETRACT
+// DE200_DEBUG_* - default NONE; available NONE, BASIC, BED_BILINEAR, PID, CLASSIC_JERK, NO_S_CURVE, ADAPTIVE_SMOOTHING, STATUS_ICONS
 
 // NONE - All default software options
-//#define DE200_EXPERIMENT_NONE
+//#define DE200_DEBUG_NONE
 // BASIC - Use for Input shaping measurements - CLASSIC_JERK, no INPUT_SHAPING or S_CURVE or JUNC_DEV or ADAPTIVE_SMOOTHING
-//#define DE200_EXPERIMENT_BASIC
+//#define DE200_DEBUG_BASIC
 
 // BILINEAR / UNIFIED - Alternative bed levelling algorithms
-//#define DE200_EXPERIMENT_BED_BILINEAR
-//#define DE200_EXPERIMENT_BED_UNIFIED
-
-// Advanced movement functionality
-//#define DE200_EXPERIMENT_INPUT_SHAPING
-//#define DE200_EXPERIMENT_S_CURVE
-//#define DE200_EXPERIMENT_ADAPTIVE_SMOOTHING
-
-//#define DE200_EXPERIMENT_FWRETRACT
-//#define DE200_EXPERIMENT_STATUS_ICONS
+//#define DE200_DEBUG_BED_BILINEAR
+//#define DE200_DEBUG_BED_UNIFIED
 
 // Revert single advanced function
 // PID rather than more advanced MPC
-//#define DE200_EXPERIMENT_PID
-//#define DE200_EXPERIMENT_CLASSIC_JERK
+//#define DE200_DEBUG_PID
+//#define DE200_DEBUG_CLASSIC_JERK
+//#define DE200_DEBUG_NO_S_CURVE
+//#define DE200_DEBUG_NO_XY_FREQ
 
+// Advanced movement functionality
+//#define DE200_DEBUG_ADAPTIVE_SMOOTHING
+
+// Additional community-developed icons
+//#define DE200_DEBUG_STATUS_ICONS
 
 /*
  * DE200: Validate options and set default and derivative values
@@ -187,13 +186,19 @@
   #define DE200_HEAD_BLTOUCH_ANY
 #endif
 
-#if NONE(DE200_EXPERIMENT_NONE, DE200_EXPERIMENT_BASIC, DE200_EXPERIMENT_BED_BILINEAR, DE200_EXPERIMENT_BED_UNIFIED, \
-  DE200_EXPERIMENT_INPUT_SHAPING, DE200_EXPERIMENT_S_CURVE, DE200_EXPERIMENT_PID, DE200_EXPERIMENT_CLASSIC_JERK, \
-  DE200_EXPERIMENT_STATUS_ICONS, DE200_EXPERIMENT_ADAPTIVE_SMOOTHING, DE200_EXPERIMENT_FWRETRACT)
-  #define DE200_EXPERIMENT_NONE
+#if NONE(DE200_DEBUG_NONE, DE200_DEBUG_BASIC, DE200_DEBUG_BED_BILINEAR, DE200_DEBUG_BED_UNIFIED, \
+  DE200_DEBUG_PID, DE200_DEBUG_CLASSIC_JERK, DE200_DEBUG_NO_S_CURVE, DE200_DEBUG_NO_XY_FREQ, \
+  DE200_DEBUG_ADAPTIVE_SMOOTHING, DE200_DEBUG_STATUS_ICONS)
+  #define DE200_DEBUG_NONE
 #endif
-#if NONE(DE200_EXPERIMENT_BED_BILINEAR, DE200_EXPERIMENT_BED_UNIFIED)
-  #define DE200_EXPERIMENT_BED_LINEAR
+#if NONE(DE200_DEBUG_BED_BILINEAR, DE200_DEBUG_BED_UNIFIED)
+  #define DE200_DEBUG_BED_LINEAR
+#endif
+#if DISABLED(DE200_DEBUG_NO_S_CURVE)
+  #define DE200_DEBUG_S_CURVE
+#endif
+#if DISABLED(DE200_DEBUG_NO_XY_FREQ)
+  #define DE200_DEBUG_XY_FREQ
 #endif
 
 /*
@@ -224,6 +229,7 @@
   #elif ALL(DE200_SIZE_XL)
     #define MACHINE_ABOUT_LINE1 "XL"
   #endif
+
   // Non-Dagoma features
   #if ALL(DE200_ZSCREWS_T8_8, DE200_HEAD_Z122, DE200_EXTRUDER_MK8)
     #define MACHINE_ABOUT_LINE2 "T8-8,Z122,MK8-Extr."
@@ -248,26 +254,24 @@
   #elif ALL(DE200_EXTRUDER_MK8)
     #define MACHINE_ABOUT_LINE2 "MK8-Extr."
   #endif
+
   // Advanced Marlin features
-  #if ENABLED(DE200_EXPERIMENT_BASIC)
-    #define MACHINE_ABOUT_LINE3 "X:No adv. movement"
-  #elif ENABLED(DE200_EXPERIMENT_INPUT_SHAPING)
-    #define MACHINE_ABOUT_LINE3 "X:Input Shaping"
-  #elif ENABLED(DE200_EXPERIMENT_S_CURVE)
-    #define MACHINE_ABOUT_LINE3 "X:S-Curve Accel."
-  #elif ENABLED(DE200_EXPERIMENT_STATUS_ICONS)
-    #define MACHINE_ABOUT_LINE3 "X:Status Icons"
-  #elif ENABLED(DE200_EXPERIMENT_ADAPTIVE_SMOOTHING)
-    #define MACHINE_ABOUT_LINE3 "X:Adaptive Smooth"
-  #elif ENABLED(DE200_EXPERIMENT_FWRETRACT)
-    #define MACHINE_ABOUT_LINE3 "X:Firmware Retract"
-  #elif ENABLED(DE200_EXPERIMENT_PID)
-    #define MACHINE_ABOUT_LINE3 "X:Hotend-PID"
-  #elif ENABLED(DE200_EXPERIMENT_CLASSIC_JERK)
-    #define MACHINE_ABOUT_LINE3 "X:Classic Jerk"
+  #if ENABLED(DE200_DEBUG_BASIC)
+    #define MACHINE_ABOUT_LINE3 "D:No adv. movement"
+  #elif ENABLED(DE200_DEBUG_PID)
+    #define MACHINE_ABOUT_LINE3 "D:Hotend-PID"
+  #elif ENABLED(DE200_DEBUG_CLASSIC_JERK)
+    #define MACHINE_ABOUT_LINE3 "D:Jerk not Lin. Adv"
+  #elif ENABLED(DE200_DEBUG_NO_S_CURVE)
+    #define MACHINE_ABOUT_LINE3 "D:No S-Curve Accel."
+  #elif ENABLED(DE200_DEBUG_NO_XY_FREQ)
+    #define MACHINE_ABOUT_LINE3 "D:No XY Freq. Limit"
+  #elif ENABLED(DE200_DEBUG_ADAPTIVE_SMOOTHING)
+    #define MACHINE_ABOUT_LINE3 "D:Adaptive Smooth."
+  #elif ENABLED(DE200_DEBUG_STATUS_ICONS)
+    #define MACHINE_ABOUT_LINE3 "D:Status Icons"
   #endif
 #endif
-
 
 /**
  * Configuration.h
@@ -836,7 +840,7 @@
 #define TEMP_SENSOR_5 0
 #define TEMP_SENSOR_6 0
 #define TEMP_SENSOR_7 0
-#define TEMP_SENSOR_BED TERN(DE200_WARPING_BED_ANY, 75, 0)
+#define TEMP_SENSOR_BED TERN(WARPING_BED_ATELIER3D, 75, 0)
 #define TEMP_SENSOR_PROBE 0
 #define TEMP_SENSOR_CHAMBER 0
 #define TEMP_SENSOR_COOLER 0
@@ -950,7 +954,7 @@
  * PIDTEMP : PID temperature control (~4.1K)
  * MPCTEMP : Predictive Model temperature control. (~1.8K without auto-tune)
  */
-#if ENABLED(DE200_EXPERIMENT_PID)
+#if ENABLED(DE200_DEBUG_PID)
   #define PIDTEMP           // See the PID Tuning Guide at https://reprap.org/wiki/PID_Tuning
 #else
   #define MPCTEMP         // ** EXPERIMENTAL ** See https://marlinfw.org/docs/features/model_predictive_control.html
@@ -1604,7 +1608,7 @@
  * When changing speed and direction, if the difference is less than the
  * value set here, it may happen instantaneously.
  */
-#if ANY(DE200_EXPERIMENT_BASIC, DE200_EXPERIMENT_CLASSIC_JERK)
+#if ANY(DE200_DEBUG_BASIC, DE200_DEBUG_CLASSIC_JERK)
   #define CLASSIC_JERK
 #endif
 #if ENABLED(CLASSIC_JERK)
@@ -1656,7 +1660,7 @@
  *
  * See https://github.com/synthetos/TinyG/wiki/Jerk-Controlled-Motion-Explained
  */
-#if ENABLED(DE200_EXPERIMENT_S_CURVE)
+#if NONE(DE200_DEBUG_BASIC, DE200_DEBUG_NO_S_CURVE)
   #define S_CURVE_ACCELERATION
 #endif
 
@@ -2132,6 +2136,8 @@
 
 // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
 // You'll need this much clearance above Z_MAX_POS to avoid grinding.
+// This should probably match the value of Z_CLEARANCE_DEPLOY_PROBE set c. 120 lines above
+
 #if ANY(DE200_HEAD_BLTOUCH_ANY, DE200_HEAD_TOUCHMI_ANY)
   #define Z_CLEARANCE_FOR_HOMING   10 // Minimum for TouchMI is 10mm
 #else
@@ -2419,11 +2425,11 @@
  *   With an LCD controller the process is guided step-by-step.
  */
 //#define AUTO_BED_LEVELING_3POINT
-#if ENABLED(DE200_EXPERIMENT_BED_LINEAR)
+#if ENABLED(DE200_DEBUG_BED_LINEAR)
   #define AUTO_BED_LEVELING_LINEAR
-#elif ENABLED(DE200_EXPERIMENT_BED_BILINEAR)
+#elif ENABLED(DE200_DEBUG_BED_BILINEAR)
   #define AUTO_BED_LEVELING_BILINEAR
-#elif ENABLED(DE200_EXPERIMENT_BED_UNIFIED)
+#elif ENABLED(DE200_DEBUG_BED_UNIFIED)
   #define AUTO_BED_LEVELING_UBL
 #else
   #error DE200_BED_LEVELING undefined
@@ -2496,7 +2502,7 @@
   /**
    * Enable the G26 Mesh Validation Pattern tool.
    */
-  #if ANY(DE200_EXPERIMENT_BED_BILINEAR, DE200_EXPERIMENT_BED_UNIFIED)
+  #if ANY(DE200_DEBUG_BED_BILINEAR, DE200_DEBUG_BED_UNIFIED)
     #define G26_MESH_VALIDATION
   #endif
   #if ENABLED(G26_MESH_VALIDATION)
