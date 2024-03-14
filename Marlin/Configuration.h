@@ -210,23 +210,23 @@
 #if ENABLED(DE200_SCREEN_ANY)
   // Dagoma standard features
   #if ALL(DE200_EXTRUDER_BICOLOR, DE200_ZSCREWS_EXPERT, DE200_SIZE_XL)
-    #define MACHINE_ABOUT_LINE1 "Bicolor,Expert,XL"
+    #define MACHINE_ABOUT_LINE1 "Bicolor, Expert, XL"
   #elif ALL(DE200_EXTRUDER_BICOLOR, DE200_ZSCREWS_EXPERT)
-    #define MACHINE_ABOUT_LINE1 "Bicolor,Expert"
+    #define MACHINE_ABOUT_LINE1 "Bicolor, Expert"
   #elif ALL(DE200_EXTRUDER_BICOLOR, DE200_SIZE_XL)
-    #define MACHINE_ABOUT_LINE1 "Bicolor,XL"
+    #define MACHINE_ABOUT_LINE1 "Bicolor, XL"
   #elif ALL(DE200_EXTRUDER_BICOLOR)
     #define MACHINE_ABOUT_LINE1 "Bicolor"
   #elif ALL(DE200_EXTRUDER_PLUS, DE200_ZSCREWS_EXPERT, DE200_SIZE_XL)
-    #define MACHINE_ABOUT_LINE1 "ExtrPlus,Expert,XL"
+    #define MACHINE_ABOUT_LINE1 "Extruder+, Expert, XL"
   #elif ALL(DE200_EXTRUDER_PLUS, DE200_ZSCREWS_EXPERT)
-    #define MACHINE_ABOUT_LINE1 "ExtrPlus,Expert"
+    #define MACHINE_ABOUT_LINE1 "Extruder+, Expert"
   #elif ALL(DE200_EXTRUDER_PLUS, DE200_SIZE_XL)
-    #define MACHINE_ABOUT_LINE1 "ExtrPlus,XL"
+    #define MACHINE_ABOUT_LINE1 "Extruder+, XL"
   #elif ALL(DE200_EXTRUDER_PLUS)
-    #define MACHINE_ABOUT_LINE1 "ExtrPlus"
+    #define MACHINE_ABOUT_LINE1 "Extruder+"
   #elif ALL(DE200_ZSCREWS_EXPERT, DE200_SIZE_XL)
-    #define MACHINE_ABOUT_LINE1 "Expert,XL"
+    #define MACHINE_ABOUT_LINE1 "Expert, XL"
   #elif ALL(DE200_ZSCREWS_EXPERT)
     #define MACHINE_ABOUT_LINE1 "Expert"
   #elif ALL(DE200_SIZE_XL)
@@ -235,46 +235,46 @@
 
   // Non-Dagoma features
   #if ALL(DE200_ZSCREWS_T8_8, DE200_HEAD_Z122, DE200_EXTRUDER_MK8)
-    #define MACHINE_ABOUT_LINE2 "T8-8,Z122,MK8-Extr."
+    #define MACHINE_ABOUT_LINE2 "Z122/T8-8/MK8-Extrud."
   #elif ALL(DE200_ZSCREWS_T8_8, DE200_HEAD_Z122)
-    #define MACHINE_ABOUT_LINE2 "T8-8,Z122"
+    #define MACHINE_ABOUT_LINE2 "Z122/T8-8"
   #elif ALL(DE200_ZSCREWS_T8_8, DE200_EXTRUDER_MK8)
-    #define MACHINE_ABOUT_LINE2 "T8-8,MK8-Extr."
+    #define MACHINE_ABOUT_LINE2 "T8-8/MK8-Extruder"
   #elif ALL(DE200_ZSCREWS_T8_8)
     #define MACHINE_ABOUT_LINE2 "T8-8"
   #elif ALL(DE200_ZSCREWS_T8_2, DE200_HEAD_Z122, DE200_EXTRUDER_MK8)
-    #define MACHINE_ABOUT_LINE2 "T8-2,Z122,MK8-Extr."
+    #define MACHINE_ABOUT_LINE2 "Z122/T8-2/MK8-Extrud."
   #elif ALL(DE200_ZSCREWS_T8_2, DE200_HEAD_Z122)
-    #define MACHINE_ABOUT_LINE2 "T8-2,Z122"
+    #define MACHINE_ABOUT_LINE2 "Z122/T8-2"
   #elif ALL(DE200_ZSCREWS_T8_2, DE200_EXTRUDER_MK8)
-    #define MACHINE_ABOUT_LINE2 "T8-2,MK8-Extr."
+    #define MACHINE_ABOUT_LINE2 "T8-2/MK8-Extruder"
   #elif ALL(DE200_ZSCREWS_T8_2)
     #define MACHINE_ABOUT_LINE2 "T8-2"
   #elif ALL(DE200_HEAD_Z122, DE200_EXTRUDER_MK8)
-    #define MACHINE_ABOUT_LINE2 "Z122,MK8-Extr."
+    #define MACHINE_ABOUT_LINE2 "Z122/MK8-Extruder"
   #elif ALL(DE200_HEAD_Z122)
     #define MACHINE_ABOUT_LINE2 "Z122"
   #elif ALL(DE200_EXTRUDER_MK8)
-    #define MACHINE_ABOUT_LINE2 "MK8-Extr."
+    #define MACHINE_ABOUT_LINE2 "MK8-Extruder"
   #endif
 
   // Advanced Marlin features
   #if ENABLED(DE200_DEBUG_BASIC)
-    #define MACHINE_ABOUT_LINE3 "D:No adv. movement"
+    #define MACHINE_ABOUT_LINE3 "Dbg: No adv. movement"
   #elif ENABLED(DE200_DEBUG_SERIAL_DEBUG)
-    #define MACHINE_ABOUT_LINE3 "D:SERIAL DEBUGGING"
+    #define MACHINE_ABOUT_LINE3 "Dbg: SERIAL DEBUGGING"
   #elif ENABLED(DE200_DEBUG_PID)
-    #define MACHINE_ABOUT_LINE3 "D:Hotend-PID"
+    #define MACHINE_ABOUT_LINE3 "Dbg: Hotend-PID"
   #elif ENABLED(DE200_DEBUG_CLASSIC_JERK)
-    #define MACHINE_ABOUT_LINE3 "D:Jerk not Lin. Adv"
+    #define MACHINE_ABOUT_LINE3 "Dbg: Classic Jerk"
   #elif ENABLED(DE200_DEBUG_NO_S_CURVE)
-    #define MACHINE_ABOUT_LINE3 "D:No S-Curve Accel."
+    #define MACHINE_ABOUT_LINE3 "Dbg: No S-Curve Accel"
   #elif ENABLED(DE200_DEBUG_NO_XY_FREQ)
-    #define MACHINE_ABOUT_LINE3 "D:No XY Freq. Limit"
+    #define MACHINE_ABOUT_LINE3 "Dbg: No XY Freq Limit"
   #elif ENABLED(DE200_DEBUG_ADAPTIVE_SMOOTHING)
-    #define MACHINE_ABOUT_LINE3 "D:Adaptive Smooth."
+    #define MACHINE_ABOUT_LINE3 "Dbg: Adaptive Smooth."
   #elif ENABLED(DE200_DEBUG_STATUS_ICONS)
-    #define MACHINE_ABOUT_LINE3 "D:Status Icons"
+    #define MACHINE_ABOUT_LINE3 "Dbg: New Status Icons"
   #endif
 #endif
 
