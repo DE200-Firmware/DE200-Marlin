@@ -74,7 +74,6 @@
 #define BOARD_MKS_BASE                1107  // MKS BASE v1.0
 #define BOARD_MKS_BASE_14             1108  // MKS BASE v1.4 with Allegro A4982 stepper drivers
 #define BOARD_MKS_BASE_15             1109  // MKS BASE v1.5 with Allegro A4982 stepper drivers
-#define BOARD_MKS_BASE_15_DAGOMA      1199  // MKS BASE v1.5 with Allegro A4982 stepper drivers - Dagoma non-standard pinouts
 #define BOARD_MKS_BASE_16             1110  // MKS BASE v1.6 with Allegro A4982 stepper drivers
 #define BOARD_MKS_BASE_HEROIC         1111  // MKS BASE 1.0 with Heroic HR4982 stepper drivers
 #define BOARD_MKS_GEN_13              1112  // MKS GEN v1.3 or 1.4
@@ -132,6 +131,7 @@
 #define BOARD_PXMALION_CORE_I3        1164  // Pxmalion Core I3
 #define BOARD_PANOWIN_CUTLASS         1165  // Panowin Cutlass (as found in the Panowin F1)
 #define BOARD_KODAMA_BARDO            1166  // Kodama Bardo V1.x (as found in the Kodama Trinus)
+#define BOARD_DAGOMA_D6               1167  // Dagoma D6
 
 //
 // RAMBo and derivatives
