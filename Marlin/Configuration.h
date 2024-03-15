@@ -1568,11 +1568,15 @@
  * Override with M203
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 200, 200, 5, 170 } // Dagoma Z value 4
+//#define DEFAULT_MAX_FEEDRATE        { 500, 500, 4, 170 } // Dagoma values
+// Reduced to more realistic values in order that Input Shaping ram usage is reasonable.
+// I have never run my DE200 at more than 120mm/s and at that speed, shifting is possible,
+// so 200mm/s is a pretty high maximum.
+#define DEFAULT_MAX_FEEDRATE          { 200, 200, 5, 170 }
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
-  #define MAX_FEEDRATE_EDIT_VALUES    { 600, 600, 6, 200 } // ...or, set your own edit limits
+  #define MAX_FEEDRATE_EDIT_VALUES    { 300, 300, 6, 200 } // ...or, set your own edit limits
 #endif
 
 /**
