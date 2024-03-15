@@ -1213,7 +1213,8 @@
       #define SHAPING_ZETA_X  0.10f     // Damping ratio of the X axis (range: 0.0 = no damping to 1.0 = critical damping).
     #endif
     #if ENABLED(INPUT_SHAPING_Y)
-      #define SHAPING_FREQ_Y  4         // (Hz) The default dominant resonant frequency on the Y axis.
+      // We want damping, but for AVR frequency must be >=16 whereas measured resonant frequency was c. 4Hz.
+      #define SHAPING_FREQ_Y  16        // (Hz) The default dominant resonant frequency on the Y axis.
       #define SHAPING_ZETA_Y  0.50f     // Damping ratio of the Y axis (range: 0.0 = no damping to 1.0 = critical damping).
     #endif
   #else // Only std head has measured damping factor, otherwise set off (user can set them to non-zero)
