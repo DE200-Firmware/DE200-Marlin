@@ -90,8 +90,8 @@ on:
         required: true
         type: choice
         default: STD
-      debug:
-        description: 'Debug features:'
+      special:
+        description: 'Special features:'
         options: [NONE, BASIC, SERIAL_DEBUG, BED_BILINEAR, BED_UNIFIED, PID, CLASSIC_JERK, NO_S_CURVE, NO_XY_FREQ, ADAPTIVE_SMOOTHING, STATUS_ICONS]
         required: true
         type: choice
@@ -135,8 +135,8 @@ on:
         description: 'Print head (Std, Z122):'
         required: true
         type: string
-      debug:
-        description: 'debug Marlin features:'
+      special:
+        description: 'special Marlin features:'
         required: true
         type: string
 
@@ -152,7 +152,7 @@ concurrency:
     -warping:${{ inputs.warping }}\
     -mb:${{ inputs.mb }}\
     -head:${{ inputs.head }}\
-    -debug:${{ inputs.debug }}\
+    -special:${{ inputs.special }}\
     "
   cancel-in-progress: true
 
@@ -179,8 +179,8 @@ jobs:
         (inputs.mb         != 'STD'   && inputs.mb) || '',
         (inputs.head       != 'STD'   && '-') || '',
         (inputs.head       != 'STD'   && inputs.head) || '',
-        (inputs.debug      != 'NONE'  && '-DEBUG-') || '',
-        (inputs.debug      != 'NONE'  && inputs.debug) || ''
+        (inputs.special    != 'NONE'  && '-special-') || '',
+        (inputs.special    != 'NONE'  && inputs.special) || ''
         ) }}
     name: "Build:
       ${{ (inputs.screen == 'NONE' && 'nolcd') || inputs.lang }}
@@ -192,7 +192,7 @@ jobs:
       warp:${{ inputs.warping }}
       mb:${{ inputs.mb }}
       head:${{ inputs.head }}
-      debug:${{ inputs.debug }}
+      special:${{ inputs.special }}
       "
     runs-on: ubuntu-latest
     steps:
@@ -232,7 +232,7 @@ jobs:
           -D DE200_WARPING_${{ inputs.warping }}
           -D DE200_MB_${{ inputs.mb }}
           -D DE200_HEAD_${{ inputs.head }}
-          -D DE200_DEBUG_${{ inputs.debug }}\
+          -D DE200_SPECIAL_${{ inputs.special }}\
           "
 
     - name: Post build script

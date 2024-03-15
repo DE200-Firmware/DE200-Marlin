@@ -103,32 +103,32 @@
 //#define DE200_HEAD_Z122
 //#define DE200_HEAD_Z122_BLTOUCH
 
-// DE200_DEBUG_* - default NONE; available NONE, BASIC, SERIAL_DEBUG, BED_BILINEAR, PID, CLASSIC_JERK, NO_S_CURVE, ADAPTIVE_SMOOTHING, STATUS_ICONS
+// DE200_SPECIAL_* - default NONE; available NONE, BASIC, SERIAL_DEBUG, BED_BILINEAR, PID, CLASSIC_JERK, NO_S_CURVE, ADAPTIVE_SMOOTHING, STATUS_ICONS
 
 // NONE - All default software options
-//#define DE200_DEBUG_NONE
+//#define DE200_SPECIAL_NONE
 // BASIC - Use for Input shaping measurements - CLASSIC_JERK, no INPUT_SHAPING or S_CURVE or JUNC_DEV or ADAPTIVE_SMOOTHING
-//#define DE200_DEBUG_BASIC
+//#define DE200_SPECIAL_BASIC
 // SERIAL_DEBUG - Use for debugging Marlin itself (or configuration) - sends copious debug messages to the serial port
 // e.g. to debug Home/Bed-levelling, do M502/M500/M111 S247/G28/G29
-//#define DE200_DEBUG_SERIAL_DEBUG
+//#define DE200_SPECIAL_SERIAL_DEBUG
 
 // BILINEAR / UNIFIED - Alternative bed levelling algorithms
-//#define DE200_DEBUG_BED_BILINEAR
-//#define DE200_DEBUG_BED_UNIFIED
+//#define DE200_SPECIAL_BED_BILINEAR
+//#define DE200_SPECIAL_BED_UNIFIED
 
 // Revert single advanced function
 // PID rather than more advanced MPC
-//#define DE200_DEBUG_PID
-//#define DE200_DEBUG_CLASSIC_JERK
-//#define DE200_DEBUG_NO_S_CURVE
-//#define DE200_DEBUG_NO_XY_FREQ
+//#define DE200_SPECIAL_PID
+//#define DE200_SPECIAL_CLASSIC_JERK
+//#define DE200_SPECIAL_NO_S_CURVE
+//#define DE200_SPECIAL_NO_XY_FREQ
 
 // Advanced movement functionality
-//#define DE200_DEBUG_ADAPTIVE_SMOOTHING
+//#define DE200_SPECIAL_ADAPTIVE_SMOOTHING
 
 // Additional community-developed icons
-//#define DE200_DEBUG_STATUS_ICONS
+//#define DE200_SPECIAL_STATUS_ICONS
 
 /*
  * DE200: Validate options and set default and derivative values
@@ -189,19 +189,19 @@
   #define DE200_HEAD_BLTOUCH_ANY
 #endif
 
-#if NONE(DE200_DEBUG_NONE, DE200_DEBUG_BASIC, DE200_DEBUG_SERIAL_DEBUG, DE200_DEBUG_BED_BILINEAR, DE200_DEBUG_BED_UNIFIED, \
-  DE200_DEBUG_PID, DE200_DEBUG_CLASSIC_JERK, DE200_DEBUG_NO_S_CURVE, DE200_DEBUG_NO_XY_FREQ, \
-  DE200_DEBUG_ADAPTIVE_SMOOTHING, DE200_DEBUG_STATUS_ICONS)
-  #define DE200_DEBUG_NONE
+#if NONE(DE200_SPECIAL_NONE, DE200_SPECIAL_BASIC, DE200_SPECIAL_SERIAL_DEBUG, DE200_SPECIAL_BED_BILINEAR, DE200_SPECIAL_BED_UNIFIED, \
+  DE200_SPECIAL_PID, DE200_SPECIAL_CLASSIC_JERK, DE200_SPECIAL_NO_S_CURVE, DE200_SPECIAL_NO_XY_FREQ, \
+  DE200_SPECIAL_ADAPTIVE_SMOOTHING, DE200_SPECIAL_STATUS_ICONS)
+  #define DE200_SPECIAL_NONE
 #endif
-#if NONE(DE200_DEBUG_BED_BILINEAR, DE200_DEBUG_BED_UNIFIED)
-  #define DE200_DEBUG_BED_LINEAR
+#if NONE(DE200_SPECIAL_BED_BILINEAR, DE200_SPECIAL_BED_UNIFIED)
+  #define DE200_SPECIAL_BED_LINEAR
 #endif
-#if DISABLED(DE200_DEBUG_NO_S_CURVE)
-  #define DE200_DEBUG_S_CURVE
+#if DISABLED(DE200_SPECIAL_NO_S_CURVE)
+  #define DE200_SPECIAL_S_CURVE
 #endif
-#if DISABLED(DE200_DEBUG_NO_XY_FREQ)
-  #define DE200_DEBUG_XY_FREQ
+#if DISABLED(DE200_SPECIAL_NO_XY_FREQ)
+  #define DE200_SPECIAL_XY_FREQ
 #endif
 
 /*
@@ -259,22 +259,22 @@
   #endif
 
   // Advanced Marlin features
-  #if ENABLED(DE200_DEBUG_BASIC)
-    #define MACHINE_ABOUT_LINE3 "Dbg: No adv. movement"
-  #elif ENABLED(DE200_DEBUG_SERIAL_DEBUG)
-    #define MACHINE_ABOUT_LINE3 "Dbg: SERIAL DEBUGGING"
-  #elif ENABLED(DE200_DEBUG_PID)
-    #define MACHINE_ABOUT_LINE3 "Dbg: Hotend-PID"
-  #elif ENABLED(DE200_DEBUG_CLASSIC_JERK)
-    #define MACHINE_ABOUT_LINE3 "Dbg: Classic Jerk"
-  #elif ENABLED(DE200_DEBUG_NO_S_CURVE)
-    #define MACHINE_ABOUT_LINE3 "Dbg: No S-Curve Accel"
-  #elif ENABLED(DE200_DEBUG_NO_XY_FREQ)
-    #define MACHINE_ABOUT_LINE3 "Dbg: No XY Freq Limit"
-  #elif ENABLED(DE200_DEBUG_ADAPTIVE_SMOOTHING)
-    #define MACHINE_ABOUT_LINE3 "Dbg: Adaptive Smooth."
-  #elif ENABLED(DE200_DEBUG_STATUS_ICONS)
-    #define MACHINE_ABOUT_LINE3 "Dbg: New Status Icons"
+  #if ENABLED(DE200_SPECIAL_BASIC)
+    #define MACHINE_ABOUT_LINE3 "Sp: No adv. movement"
+  #elif ENABLED(DE200_SPECIAL_SERIAL_DEBUG)
+    #define MACHINE_ABOUT_LINE3 "Sp: SERIAL DEBUGGING"
+  #elif ENABLED(DE200_SPECIAL_PID)
+    #define MACHINE_ABOUT_LINE3 "Sp: Hotend-PID"
+  #elif ENABLED(DE200_SPECIAL_CLASSIC_JERK)
+    #define MACHINE_ABOUT_LINE3 "Sp: Classic Jerk"
+  #elif ENABLED(DE200_SPECIAL_NO_S_CURVE)
+    #define MACHINE_ABOUT_LINE3 "Sp: No S-Curve Accel"
+  #elif ENABLED(DE200_SPECIAL_NO_XY_FREQ)
+    #define MACHINE_ABOUT_LINE3 "Sp: No XY Freq Limit"
+  #elif ENABLED(DE200_SPECIAL_ADAPTIVE_SMOOTHING)
+    #define MACHINE_ABOUT_LINE3 "Sp: Adaptive Smooth."
+  #elif ENABLED(DE200_SPECIAL_STATUS_ICONS)
+    #define MACHINE_ABOUT_LINE3 "Sp: New Status Icons"
   #endif
 #endif
 
@@ -959,7 +959,7 @@
  * PIDTEMP : PID temperature control (~4.1K)
  * MPCTEMP : Predictive Model temperature control. (~1.8K without auto-tune)
  */
-#if ENABLED(DE200_DEBUG_PID)
+#if ENABLED(DE200_SPECIAL_PID)
   #define PIDTEMP           // See the PID Tuning Guide at https://reprap.org/wiki/PID_Tuning
 #else
   #define MPCTEMP         // ** EXPERIMENTAL ** See https://marlinfw.org/docs/features/model_predictive_control.html
@@ -1613,7 +1613,7 @@
  * When changing speed and direction, if the difference is less than the
  * value set here, it may happen instantaneously.
  */
-#if ANY(DE200_DEBUG_BASIC, DE200_DEBUG_CLASSIC_JERK)
+#if ANY(DE200_SPECIAL_BASIC, DE200_SPECIAL_CLASSIC_JERK)
   #define CLASSIC_JERK
 #endif
 #if ENABLED(CLASSIC_JERK)
@@ -1665,7 +1665,7 @@
  *
  * See https://github.com/synthetos/TinyG/wiki/Jerk-Controlled-Motion-Explained
  */
-#if NONE(DE200_DEBUG_BASIC, DE200_DEBUG_NO_S_CURVE)
+#if NONE(DE200_SPECIAL_BASIC, DE200_SPECIAL_NO_S_CURVE)
   #define S_CURVE_ACCELERATION
 #endif
 
@@ -2430,11 +2430,11 @@
  *   With an LCD controller the process is guided step-by-step.
  */
 //#define AUTO_BED_LEVELING_3POINT
-#if ENABLED(DE200_DEBUG_BED_LINEAR)
+#if ENABLED(DE200_SPECIAL_BED_LINEAR)
   #define AUTO_BED_LEVELING_LINEAR
-#elif ENABLED(DE200_DEBUG_BED_BILINEAR)
+#elif ENABLED(DE200_SPECIAL_BED_BILINEAR)
   #define AUTO_BED_LEVELING_BILINEAR
-#elif ENABLED(DE200_DEBUG_BED_UNIFIED)
+#elif ENABLED(DE200_SPECIAL_BED_UNIFIED)
   #define AUTO_BED_LEVELING_UBL
 #else
   #error DE200_BED_LEVELING undefined
@@ -2478,7 +2478,7 @@
  * Turn on with the command 'M111 S32'.
  * NOTE: Requires a lot of flash!
  */
-#if ENABLED(DE200_DEBUG_SERIAL_DEBUG)
+#if ENABLED(DE200_SPECIAL_SERIAL_DEBUG)
   #define DEBUG_LEVELING_FEATURE
 #endif
 
@@ -2509,7 +2509,7 @@
   /**
    * Enable the G26 Mesh Validation Pattern tool.
    */
-  #if ANY(DE200_DEBUG_BED_BILINEAR, DE200_DEBUG_BED_UNIFIED)
+  #if ANY(DE200_SPECIAL_BED_BILINEAR, DE200_SPECIAL_BED_UNIFIED)
     #define G26_MESH_VALIDATION
   #endif
   #if ENABLED(G26_MESH_VALIDATION)

@@ -1202,7 +1202,7 @@
  *  X<1>         Set the given parameters only for the X axis.
  *  Y<1>         Set the given parameters only for the Y axis.
  */
-#if NONE(DE200_DEBUG_BASIC)
+#if NONE(DE200_SPECIAL_BASIC)
   #define INPUT_SHAPING_X
   #define INPUT_SHAPING_Y
 #endif
@@ -1288,7 +1288,7 @@
  * See https://hydraraptor.blogspot.com/2010/12/frequency-limit.html
  * Use M201 F<freq> S<min%> to change limits at runtime.
  */
-#if NONE(DE200_DEBUG_BASIC, DE200_DEBUG_NO_XY_FREQ)
+#if NONE(DE200_SPECIAL_BASIC, DE200_SPECIAL_NO_XY_FREQ)
   #define XY_FREQUENCY_LIMIT      10 // (Hz) Maximum frequency of small zigzag infill moves. Set with M201 F<hertz>.
 #endif
 #ifdef XY_FREQUENCY_LIMIT
@@ -1412,7 +1412,7 @@
  * vibration and surface artifacts. The algorithm adapts to provide the best possible step smoothing at the
  * lowest stepping frequencies.
  */
-#if ENABLED(DE200_DEBUG_ADAPTIVE_SMOOTHING)
+#if ENABLED(DE200_SPECIAL_ADAPTIVE_SMOOTHING)
   #define ADAPTIVE_STEP_SMOOTHING
 #endif
 
@@ -1832,13 +1832,13 @@
   // SD Card Sorting options
   #if ENABLED(SDCARD_SORT_ALPHA)
     #define SDSORT_REVERSE     false  // Default to sorting file names in reverse order.
-    #define SDSORT_LIMIT       40     // Maximum number of sorted items (10-256). Costs 27 bytes each.
+    #define SDSORT_LIMIT       20     // Maximum number of sorted items (10-256). Costs 27 bytes each.
     #define SDSORT_FOLDERS     -1     // -1=above  0=none  1=below
     #define SDSORT_GCODE       true   // Enable G-code M34 to set sorting behaviors: M34 S<-1|0|1> F<-1|0|1>
     #define SDSORT_USES_RAM    false  // Pre-allocate a static array for faster pre-sorting.
-    #define SDSORT_USES_STACK  false  // Prefer the stack for pre-sorting to give back some SRAM. (Negated by next 2 options.)
+    #define SDSORT_USES_STACK  true   // Prefer the stack for pre-sorting to give back some SRAM. (Negated by next 2 options.)
     #define SDSORT_CACHE_NAMES false  // Keep sorted items in RAM longer for speedy performance. Most expensive option.
-    #define SDSORT_DYNAMIC_RAM false  // Use dynamic allocation (within SD menus). Least expensive option. Set SDSORT_LIMIT before use!
+    #define SDSORT_DYNAMIC_RAM true   // Use dynamic allocation (within SD menus). Least expensive option. Set SDSORT_LIMIT before use!
     #define SDSORT_CACHE_VFATS 2      // Maximum number of 13-byte VFAT entries to use for sorting.
                                       // Note: Only affects SCROLL_LONG_FILENAMES with SDSORT_CACHE_NAMES but not SDSORT_DYNAMIC_RAM.
   #endif
@@ -2356,7 +2356,7 @@
  *
  * See https://marlinfw.org/docs/features/lin_advance.html for full instructions.
  */
-#if NONE(DE200_DEBUG_BASIC)
+#if NONE(DE200_SPECIAL_BASIC)
   #define LIN_ADVANCE
 #endif
 #if ENABLED(LIN_ADVANCE)
@@ -3948,7 +3948,7 @@
 /**
  * Extra options for the M114 "Current Position" report
  */
-#if ENABLED(DE200_DEBUG_SERIAL_DEBUG)
+#if ENABLED(DE200_SPECIAL_SERIAL_DEBUG)
   #define M114_DETAIL         // Use 'M114` for details to check planner calculations
 #endif
 //#define M114_REALTIME       // Real current position based on forward kinematics
@@ -4017,9 +4017,7 @@
  * Enable M111 debug flags 1=ECHO, 2=INFO, 4=ERRORS (unimplemented).
  * Disable to save some flash. Some hosts (Repetier Host) may rely on this feature.
  */
-#if ENABLED(DE200_DEBUG_SERIAL_DEBUG)
-  #define DEBUG_FLAGS_GCODE
-#endif
+#define DEBUG_FLAGS_GCODE
 
 /**
  * Enable this option for a leaner build of Marlin that removes
@@ -4075,7 +4073,7 @@
 // @section custom main menu
 
 // Custom Menu: Main Menu
-#if ANY(DE200_DEBUG_BED_BILINEAR, DE200_DEBUG_BED_UNIFIED)
+#if ANY(DE200_SPECIAL_BED_BILINEAR, DE200_SPECIAL_BED_UNIFIED)
   #define CUSTOM_MENU_MAIN
 #endif
 #if ENABLED(CUSTOM_MENU_MAIN)
