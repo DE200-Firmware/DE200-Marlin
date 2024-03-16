@@ -1201,21 +1201,30 @@
  *  T[map]       Input Shaping type, 0:ZV, 1:EI, 2:2H EI (not implemented yet)
  *  X<1>         Set the given parameters only for the X axis.
  *  Y<1>         Set the given parameters only for the Y axis.
+ *
+ * INPUT_SHAPING test Gcode can be found in the DE200 directory of this repo or at one of
+ * the following URLS:
+ * https://marlinfw.org/docs/gcode/M593.html
+ * https://marlinfw.org/tools/input_shaping/freq-calibr.html
+ * https://support.th3dstudio.com/marlin-input-shaping-calculator/
  */
-#if NONE(DE200_SPECIAL_BASIC)
+#if ENABLED(DE200_SPECIAL_ADVANCED)
   #define INPUT_SHAPING_X
   #define INPUT_SHAPING_Y
 #endif
 #if ANY(INPUT_SHAPING_X, INPUT_SHAPING_Y)
   #if ENABLED(DE200_HEAD_STD, DE200_SIZE_STD)
+    // These values were determined by running the Gcode at
+    // 1. th3dstudio for the frequencies; and
+    // 2. marlinfw to double check the frequencies and determining the damping factor
     #if ENABLED(INPUT_SHAPING_X)
-      #define SHAPING_FREQ_X  38        // (Hz) The default dominant resonant frequency on the X axis.
+      #define SHAPING_FREQ_X  37.42     // (Hz) The default dominant resonant frequency on the X axis.
       #define SHAPING_ZETA_X  0.10f     // Damping ratio of the X axis (range: 0.0 = no damping to 1.0 = critical damping).
     #endif
     #if ENABLED(INPUT_SHAPING_Y)
       // We want damping, but for AVR frequency must be >=16 whereas measured resonant frequency was c. 4Hz.
-      #define SHAPING_FREQ_Y  16        // (Hz) The default dominant resonant frequency on the Y axis.
-      #define SHAPING_ZETA_Y  0.50f     // Damping ratio of the Y axis (range: 0.0 = no damping to 1.0 = critical damping).
+      #define SHAPING_FREQ_Y  18.48     // (Hz) The default dominant resonant frequency on the Y axis.
+      #define SHAPING_ZETA_Y  0.10f     // Damping ratio of the Y axis (range: 0.0 = no damping to 1.0 = critical damping).
     #endif
   #else // Only std head has measured damping factor, otherwise set off (user can set them to non-zero)
     #if ENABLED(INPUT_SHAPING_X)
@@ -1288,7 +1297,7 @@
  * See https://hydraraptor.blogspot.com/2010/12/frequency-limit.html
  * Use M201 F<freq> S<min%> to change limits at runtime.
  */
-#if NONE(DE200_SPECIAL_BASIC, DE200_SPECIAL_NO_XY_FREQ)
+#if ALL(DE200_SPECIAL_ADVANCED, DE200_SPECIAL_XY_FREQ)
   #define XY_FREQUENCY_LIMIT      10 // (Hz) Maximum frequency of small zigzag infill moves. Set with M201 F<hertz>.
 #endif
 #ifdef XY_FREQUENCY_LIMIT
@@ -2356,15 +2365,13 @@
  *
  * See https://marlinfw.org/docs/features/lin_advance.html for full instructions.
  */
-#if NONE(DE200_SPECIAL_BASIC)
-  #define LIN_ADVANCE
-#endif
+#define LIN_ADVANCE
 #if ENABLED(LIN_ADVANCE)
   #if ENABLED(DISTINCT_E_FACTORS)
     #define ADVANCE_K { 0.22 }    // (mm) Compression length per 1mm/s extruder speed, per extruder
   #else
     //#define ADVANCE_K 0.22      // (mm) Compression length applying to all extruders
-    #if ENABLED(DE200_EXTRUDER_STD)
+    #if ALL(DE200_SPECIAL_ADVANCED,DE200_EXTRUDER_STD)
       #define ADVANCE_K 0.25        // DE200 - Determined by Linear Advance calibration on a DE200 with stock extruder
                                     // Since this value is mostly about the length of the bowden tube,
                                     // this should be the same for Extruder+ / Bicolor, however
