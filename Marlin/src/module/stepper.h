@@ -159,9 +159,7 @@ constexpr ena_mask_t enable_overlap[] = {
   #endif
 
   #ifndef SHAPING_MIN_FREQ
-    #define SHAPING_MIN_FREQ _MIN(0x7FFFFFFFL \
-                                  TERN_(INPUT_SHAPING_X, TERN_(SHAPING_FREQ_X > 0, SHAPING_FREQ_X)) \
-                                  TERN_(INPUT_SHAPING_Y, TERN_(SHAPING_FREQ_Y > 0, SHAPING_FREQ_Y)) )
+    #define SHAPING_MIN_FREQ _MIN(0x7FFFFFFFL OPTARG(INPUT_SHAPING_X, _MAX(SHAPING_FREQ_X, 1)) OPTARG(INPUT_SHAPING_Y, _MAX(SHAPING_FREQ_Y, 1)))
   #endif
   constexpr uint16_t shaping_min_freq = SHAPING_MIN_FREQ,
                      shaping_echoes = max_step_rate / shaping_min_freq / 2 + 3;
