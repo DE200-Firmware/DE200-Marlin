@@ -1633,7 +1633,7 @@
  * When changing speed and direction, if the difference is less than the
  * value set here, it may happen instantaneously.
  */
-#if ANY(DE200_SPECIAL_BASIC, DE200_SPECIAL_CLASSIC_JERK)
+#if ANY(DE200_SPECIAL_BASIC,DE200_SPECIAL_CLASSIC_JERK)
   #define CLASSIC_JERK
 #endif
 #if ENABLED(CLASSIC_JERK)

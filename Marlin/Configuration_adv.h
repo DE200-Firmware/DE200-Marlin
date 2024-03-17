@@ -1125,7 +1125,7 @@
 #if ENABLED(FT_MOTION)
   #define FTM_DEFAULT_MODE        ftMotionMode_DISABLED // Default mode of fixed time control. (Enums in ft_types.h)
   #define FTM_DEFAULT_DYNFREQ_MODE dynFreqMode_DISABLED // Default mode of dynamic frequency calculation. (Enums in ft_types.h)
-  #if ENABLED(DE200_HEAD_STD, DE200_SIZE_STD)
+  #if ALL(DE200_HEAD_STD,DE200_SIZE_STD)
     #define FTM_SHAPING_DEFAULT_X_FREQ   37.42f   // (Hz) Default peak frequency used by input shapers
     #define FTM_SHAPING_DEFAULT_Y_FREQ   18.48f   // (Hz) Default peak frequency used by input shapers
     #define FTM_SHAPING_ZETA_X            0.1f    // Zeta used by input shapers for X axis
@@ -1226,12 +1226,10 @@
  * https://marlinfw.org/tools/input_shaping/freq-calibr.html
  * https://support.th3dstudio.com/marlin-input-shaping-calculator/
  */
-#if ENABLED(DE200_SPECIAL_ADVANCED)
-  #define INPUT_SHAPING_X
-  #define INPUT_SHAPING_Y
-#endif
+#define INPUT_SHAPING_X
+#define INPUT_SHAPING_Y
 #if ANY(INPUT_SHAPING_X, INPUT_SHAPING_Y)
-  #if ENABLED(DE200_HEAD_STD, DE200_SIZE_STD)
+  #if ALL(DE200_SPECIAL_ADVANCED,DE200_HEAD_STD,DE200_SIZE_STD)
     // These values were determined by running the Gcode at
     // 1. th3dstudio for the frequencies; and
     // 2. marlinfw to double check the frequencies and determining the damping factor
@@ -1242,7 +1240,7 @@
     #if ENABLED(INPUT_SHAPING_Y)
       // We want damping, but for AVR frequency must be >=16 whereas measured resonant frequency was c. 4Hz.
       #define SHAPING_FREQ_Y  18.48     // (Hz) The default dominant resonant frequency on the Y axis.
-      #define SHAPING_ZETA_Y  0.10f     // Damping ratio of the Y axis (range: 0.0 = no damping to 1.0 = critical damping).
+      #define SHAPING_ZETA_Y  0.50f     // Damping ratio of the Y axis (range: 0.0 = no damping to 1.0 = critical damping).
     #endif
   #else // Only std head has measured damping factor, otherwise set off (user can set them to non-zero)
     #if ENABLED(INPUT_SHAPING_X)
@@ -1533,7 +1531,7 @@
   //#define ENCODER_10X_STEPS_PER_SEC   30  // (steps/s) Encoder rate for 10x speed
   //#define ENCODER_100X_STEPS_PER_SEC  80  // (steps/s) Encoder rate for 100x speed
   #define ENCODER_10X_STEPS_PER_SEC     20  // (steps/s) Encoder rate for 10x speed
-  #define ENCODER_100X_STEPS_PER_SEC 10000  // (steps/s) Encoder rate for 100x speed
+  #define ENCODER_100X_STEPS_PER_SEC 10000  // (steps/s) Encoder rate for 100x speed - 10000 = effectively off
 #endif
 
 // Play a beep when the feedrate is changed from the Status Screen
