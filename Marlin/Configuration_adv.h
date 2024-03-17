@@ -1119,21 +1119,39 @@
  * Fixed-time-based Motion Control -- EXPERIMENTAL
  * Enable/disable and set parameters with G-code M493.
  */
-//#define FT_MOTION
+#if ALL(DE200_SPECIAL_ADVANCED,DE200_SPECIAL_FT_MOTION)
+  #define FT_MOTION
+#endif
 #if ENABLED(FT_MOTION)
   #define FTM_DEFAULT_MODE        ftMotionMode_DISABLED // Default mode of fixed time control. (Enums in ft_types.h)
   #define FTM_DEFAULT_DYNFREQ_MODE dynFreqMode_DISABLED // Default mode of dynamic frequency calculation. (Enums in ft_types.h)
-  #define FTM_SHAPING_DEFAULT_X_FREQ   37.0f      // (Hz) Default peak frequency used by input shapers
-  #define FTM_SHAPING_DEFAULT_Y_FREQ   37.0f      // (Hz) Default peak frequency used by input shapers
-  #define FTM_LINEAR_ADV_DEFAULT_ENA   false      // Default linear advance enable (true) or disable (false)
-  #define FTM_LINEAR_ADV_DEFAULT_K      0.0f      // Default linear advance gain
-  #define FTM_SHAPING_ZETA_X            0.1f      // Zeta used by input shapers for X axis
-  #define FTM_SHAPING_ZETA_Y            0.1f      // Zeta used by input shapers for Y axis
+  #if ENABLED(DE200_HEAD_STD, DE200_SIZE_STD)
+    #define FTM_SHAPING_DEFAULT_X_FREQ   37.42f   // (Hz) Default peak frequency used by input shapers
+    #define FTM_SHAPING_DEFAULT_Y_FREQ   18.48f   // (Hz) Default peak frequency used by input shapers
+    #define FTM_SHAPING_ZETA_X            0.1f    // Zeta used by input shapers for X axis
+    #define FTM_SHAPING_ZETA_Y            0.1f    // Zeta used by input shapers for Y axis
+  #else
+    #define FTM_SHAPING_DEFAULT_X_FREQ    0.0f    // (Hz) Default peak frequency used by input shapers
+    #define FTM_SHAPING_DEFAULT_Y_FREQ    0.0f    // (Hz) Default peak frequency used by input shapers
+    #define FTM_SHAPING_ZETA_X            0.0f    // Zeta used by input shapers for X axis
+    #define FTM_SHAPING_ZETA_Y            0.0f    // Zeta used by input shapers for Y axis
+  #endif
+  #if ALL(DE200_SPECIAL_ADVANCED,DE200_EXTRUDER_STD)
+    #define FTM_LINEAR_ADV_DEFAULT_ENA   false    // Default linear advance enable (true) or disable (false)
+    #define FTM_LINEAR_ADV_DEFAULT_K 0.25         // DE200 - Determined by Linear Advance calibration on a DE200 with stock extruder
+                                                  // Since this value is mostly about the length of the bowden tube,
+                                                  // this should be the same for Extruder+ / Bicolor, however
+                                                  // this has not been tested, and until we have verified values
+                                                  // we will set the K value to 0 for all other cases.
+  #else
+    #define FTM_LINEAR_ADV_DEFAULT_ENA   false    // Default linear advance enable (true) or disable (false)
+    #define FTM_LINEAR_ADV_DEFAULT_K      0.0f    // Default linear advance gain
+  #endif
 
   #define FTM_SHAPING_V_TOL_X           0.05f     // Vibration tolerance used by EI input shapers for X axis
   #define FTM_SHAPING_V_TOL_Y           0.05f     // Vibration tolerance used by EI input shapers for Y axis
 
-  //#define FT_MOTION_MENU                        // Provide a MarlinUI menu to set M493 parameters
+  #define FT_MOTION_MENU                        // Provide a MarlinUI menu to set M493 parameters
 
   /**
    * Advanced configuration

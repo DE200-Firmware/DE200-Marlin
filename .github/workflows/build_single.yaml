@@ -92,7 +92,7 @@ on:
         default: STD
       special:
         description: 'Special features:'
-        options: [NONE, BASIC, SERIAL_DEBUG, BED_BILINEAR, BED_UNIFIED, PID, CLASSIC_JERK, NO_S_CURVE, XY_FREQ, ADAPTIVE_SMOOTHING, STATUS_ICONS]
+        options: [NONE, BASIC, SERIAL_DEBUG, BED_BILINEAR, BED_UNIFIED, PID, CLASSIC_JERK, S_CURVE, XY_FREQ, ADAPTIVE_SMOOTHING, FT_MOTION, STATUS_ICONS]
         required: true
         type: choice
         default: NONE
@@ -179,7 +179,7 @@ jobs:
         (inputs.mb         != 'STD'   && inputs.mb) || '',
         (inputs.head       != 'STD'   && '-') || '',
         (inputs.head       != 'STD'   && inputs.head) || '',
-        (inputs.special    != 'NONE'  && '-special-') || '',
+        (inputs.special    != 'NONE'  && '-Special-') || '',
         (inputs.special    != 'NONE'  && inputs.special) || ''
         ) }}
     name: "Build:
