@@ -37,7 +37,7 @@ jobs:
         warping:    [STD]
         mb:         [STD]
         head:       [STD]
-        special:    [NONE, BASIC, SERIAL_DEBUG, BED_BILINEAR, BED_UNIFIED, PID, CLASSIC_JERK, S_CURVE, XY_FREQ, ADAPTIVE_SMOOTHING, FT_MOTION] # STATUS_ICONS
+        special:    [NONE, BASIC, SERIAL_DEBUG, BED_BILINEAR, BED_UNIFIED, PID, CLASSIC_JERK, NO_S_CURVE, XY_FREQ, NO_ADAPTIVE_SMOOTHING, FT_MOTION] # STATUS_ICONS
     permissions:
       contents: write
     uses: ./.github/workflows/build_single.yaml
