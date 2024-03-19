@@ -979,7 +979,7 @@
  */
 #if ENABLED(DE200_SPECIAL_PID)
   #define PIDTEMP           // See the PID Tuning Guide at https://reprap.org/wiki/PID_Tuning
-#elif ENABLED(DE200_SPECIAL_PID)
+#elif ENABLED(DE200_SPECIAL_MPC)
   #define MPCTEMP         // ** EXPERIMENTAL ** See https://marlinfw.org/docs/features/model_predictive_control.html
 #else
   #error "DE200_SPECIAL_PID/MPC Temperature control algorithm not defined."
