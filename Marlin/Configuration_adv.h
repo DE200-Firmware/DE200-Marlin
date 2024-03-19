@@ -1224,7 +1224,7 @@
  * the following URLS:
  * https://marlinfw.org/docs/gcode/M593.html
  * https://marlinfw.org/tools/input_shaping/freq-calibr.html
- * https://support.th3dstudio.com/marlin-input-shaping-calculator/
+ * https://support.th3dstudio.com/helpcenter/unified-marlin-input-shaping-tuning-guide/
  */
 #define INPUT_SHAPING_X
 #define INPUT_SHAPING_Y
@@ -1239,7 +1239,7 @@
     #endif
     #if ENABLED(INPUT_SHAPING_Y)
       // We want damping, but for AVR frequency must be >=16 whereas measured resonant frequency was c. 4Hz.
-      #define SHAPING_FREQ_Y  18.48f    // (Hz) The default dominant resonant frequency on the Y axis.
+      #define SHAPING_FREQ_Y  17.73f    // (Hz) The default dominant resonant frequency on the Y axis.
       #define SHAPING_ZETA_Y   0.50f    // Damping ratio of the Y axis (range: 0.0 = no damping to 1.0 = critical damping).
     #endif
   #else // Only std head has measured damping factor, otherwise set off (user can set them to non-zero)
