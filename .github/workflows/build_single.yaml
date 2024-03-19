@@ -159,6 +159,7 @@ concurrency:
 jobs:
   build:
     env:
+      MODEL:      ${{ (inputs.mb == 'DAGF5' && 'Ultim') || (inputs.mb == 'DAGD6' && 'Ultv2') || 'DE200' }}
       BUILD_FILE: ${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}{19}{20}',
         (inputs.mb         == 'DAGF5' && 'Ultim') || (inputs.mb == 'DAGD6' && 'Ultv2') || 'DE200',
         '_2.1.x-',
@@ -267,3 +268,21 @@ jobs:
       # if temp branch exists
       # Add/commit the build file to the temp branch
       # https://github.com/marketplace/actions/add-commit
+
+    - name: Summary
+      run: |
+        {
+          echo "### Build successful for options..."
+          echo "| Option      | Value       |"
+          echo "| ----------- | ----------- |"
+          echo "| Model       | $MODEL      |"
+          echo "| LCD         | ${{ inputs.screen }} |"
+          echo "| Language    | ${{ inputs.lang }} |"
+          echo "| Extruder    | ${{ inputs.extruder }} |"
+          echo "| Size        | ${{ inputs.size }} |"
+          echo "| Thermistor  | ${{ inputs.thermistor }} |"
+          echo "| Anti-Warp   | ${{ inputs.warping }} |"
+          echo "| Motherboard | ${{ inputs.mb }} |"
+          echo "| Print Head  | ${{ inputs.head }} |"
+          echo "| Sw Options  | ${{ inputs.special }} |"
+        } >> $GITHUB_STEP_SUMMARY

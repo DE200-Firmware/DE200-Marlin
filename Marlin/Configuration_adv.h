@@ -1138,7 +1138,7 @@
   #endif
   #if ALL(DE200_SPECIAL_ADVANCED,DE200_EXTRUDER_STD)
     #define FTM_LINEAR_ADV_DEFAULT_ENA   false    // Default linear advance enable (true) or disable (false)
-    #define FTM_LINEAR_ADV_DEFAULT_K 0.25         // DE200 - Determined by Linear Advance calibration on a DE200 with stock extruder
+    #define FTM_LINEAR_ADV_DEFAULT_K      0.25    // DE200 - Determined by Linear Advance calibration on a DE200 with stock extruder
                                                   // Since this value is mostly about the length of the bowden tube,
                                                   // this should be the same for Extruder+ / Bicolor, however
                                                   // this has not been tested, and until we have verified values
@@ -1148,8 +1148,8 @@
     #define FTM_LINEAR_ADV_DEFAULT_K      0.0f    // Default linear advance gain
   #endif
 
-  #define FTM_SHAPING_V_TOL_X           0.05f     // Vibration tolerance used by EI input shapers for X axis
-  #define FTM_SHAPING_V_TOL_Y           0.05f     // Vibration tolerance used by EI input shapers for Y axis
+  #define FTM_SHAPING_V_TOL_X             0.05f   // Vibration tolerance used by EI input shapers for X axis
+  #define FTM_SHAPING_V_TOL_Y             0.05f   // Vibration tolerance used by EI input shapers for Y axis
 
   #define FT_MOTION_MENU                        // Provide a MarlinUI menu to set M493 parameters
 
@@ -1254,7 +1254,7 @@
   #endif
 
   // Because we are defining FREQ_X/Y as zero in some configurations, we need to supply a MIN_FREQ
-  #define SHAPING_MIN_FREQ  15          // By default the minimum of the shaping frequencies. Override to affect SRAM usage.
+  #define SHAPING_MIN_FREQ    25        // By default the minimum of the shaping frequencies. Override to affect SRAM usage.
   //#define SHAPING_MAX_STEPRATE 10000  // By default the maximum total step rate of the shaped axes. Override to affect SRAM usage.
   #define SHAPING_MENU                  // Add a menu to the LCD to set shaping parameters.
 #endif
@@ -1658,7 +1658,7 @@
   #define STATUS_MESSAGE_SCROLLING
 
   // Apply a timeout to low-priority status messages
-  //#define STATUS_MESSAGE_TIMEOUT_SEC 30 // (seconds)
+  #define STATUS_MESSAGE_TIMEOUT_SEC 30 // (seconds)
 
   // On the Info Screen, display XY with one decimal place when possible
   //#define LCD_DECIMAL_SMALL_XY
@@ -1863,9 +1863,9 @@
     #define SDSORT_FOLDERS     -1     // -1=above  0=none  1=below
     #define SDSORT_GCODE       true   // Enable G-code M34 to set sorting behaviors: M34 S<-1|0|1> F<-1|0|1>
     #define SDSORT_USES_RAM    false  // Pre-allocate a static array for faster pre-sorting.
-    #define SDSORT_USES_STACK  true   // Prefer the stack for pre-sorting to give back some SRAM. (Negated by next 2 options.)
+    #define SDSORT_USES_STACK  false  // Prefer the stack for pre-sorting to give back some SRAM. (Negated by next 2 options.)
     #define SDSORT_CACHE_NAMES false  // Keep sorted items in RAM longer for speedy performance. Most expensive option.
-    #define SDSORT_DYNAMIC_RAM false  // Use dynamic allocation (within SD menus). Least expensive option. Set SDSORT_LIMIT before use!
+    #define SDSORT_DYNAMIC_RAM true   // Use dynamic allocation (within SD menus). Least expensive option. Set SDSORT_LIMIT before use!
     #define SDSORT_CACHE_VFATS 2      // Maximum number of 13-byte VFAT entries to use for sorting.
                                       // Note: Only affects SCROLL_LONG_FILENAMES with SDSORT_CACHE_NAMES but not SDSORT_DYNAMIC_RAM.
   #endif
@@ -2844,7 +2844,7 @@
   #define RETRACT_RECOVER_FEEDRATE      45    // (mm/s) Default feedrate for recovering from retraction
   #define RETRACT_RECOVER_FEEDRATE_SWAP  8    // (mm/s) Default feedrate for recovering from swap retraction
   #if ENABLED(MIXING_EXTRUDER)
-    //#define RETRACT_SYNC_MIXING            // Retract and restore all mixing steppers simultaneously
+    //#define RETRACT_SYNC_MIXING             // Retract and restore all mixing steppers simultaneously
   #endif
 #endif
 

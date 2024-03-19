@@ -705,18 +705,9 @@
   //#define PS_OFF_SOUND            // Beep 1s when power off
   #define PSU_ACTIVE_STATE LOW      // Set 'LOW' for ATX, 'HIGH' for X-Box
 
-  //#define PSU_DEFAULT_OFF             // Keep power off until enabled directly with M80
-  //#define PSU_POWERUP_DELAY      250  // (ms) Delay for the PSU to warm up to full power
-  //#define LED_POWEROFF_TIMEOUT 10000  // (ms) Turn off LEDs after power-off, with this amount of delay
-
-  //#define PSU_OFF_REDUNDANT           // Second pin for redundant power control
-  //#define PSU_OFF_REDUNDANT_INVERTED  // Redundant pin state is the inverse of PSU_ACTIVE_STATE
-
-  //#define PS_ON1_PIN               6  // Redundant pin required to enable power in combination with PS_ON_PIN
-
-  //#define PS_ON_EDM_PIN            8  // External Device Monitoring pins for external power control relay feedback. Fault on mismatch.
-  //#define PS_ON1_EDM_PIN           9
-  #define PS_EDM_RESPONSE          250  // (ms) Time to allow for relay action
+  //#define PSU_DEFAULT_OFF               // Keep power off until enabled directly with M80
+  //#define PSU_POWERUP_DELAY      250    // (ms) Delay for the PSU to warm up to full power
+  //#define LED_POWEROFF_TIMEOUT 10000    // (ms) Turn off LEDs after power-off, with this amount of delay
 
   //#define POWER_OFF_TIMER               // Enable M81 D<seconds> to power off after a delay
   //#define POWER_OFF_WAIT_FOR_COOLDOWN   // Enable M81 S to power off only after cooldown
@@ -988,8 +979,10 @@
  */
 #if ENABLED(DE200_SPECIAL_PID)
   #define PIDTEMP           // See the PID Tuning Guide at https://reprap.org/wiki/PID_Tuning
-#else
+#elif ENABLED(DE200_SPECIAL_PID)
   #define MPCTEMP         // ** EXPERIMENTAL ** See https://marlinfw.org/docs/features/model_predictive_control.html
+#else
+  #error "DE200_SPECIAL_PID/MPC Temperature control algorithm not defined."
 #endif
 
 #define PID_MAX  255      // Limit hotend current while PID is active (see PID_FUNCTIONAL_RANGE below); 255=full current
@@ -1028,7 +1021,7 @@
  *
  * Use a physical model of the hotend to control temperature. When configured correctly this gives
  * better responsiveness and stability than PID and removes the need for PID_EXTRUSION_SCALING
- * and PID_FAN_SCALING. Use M306 T to autotune the model.
+ * and PID_FAN_SCALING. Enable MPC_AUTOTUNE and use M306 T to autotune the model.
  * @section mpctemp
  */
 #if ENABLED(MPCTEMP)
@@ -1193,7 +1186,11 @@
  * Prevent a single extrusion longer than EXTRUDE_MAXLENGTH.
  * Note: For Bowden Extruders make this large enough to allow load/unload.
  */
-#define EXTRUDE_MAXLENGTH FILAMENT_CHANGE_UNLOAD_LENGTH
+#if ENABLED(ADVANCED_PAUSE_FEATURE)
+  #define EXTRUDE_MAXLENGTH FILAMENT_CHANGE_UNLOAD_LENGTH
+#else
+  #define EXTRUDE_MAXLENGTH ((2 * Z_MAX_POS) + X_BED_SIZE + Y_BED_SIZE)
+#endif
 
 //===========================================================================
 //======================== Thermal Runaway Protection =======================
@@ -1575,7 +1572,7 @@
 
 #if ENABLED(DE200_ZSCREWS_STD)
   #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 2560, DE200_EXTRUDER_STEPS_MM }
-#elif ENABLED(DE200_ZSCREWS_EXPERT)
+#elif ENABLED(DE200_ZSCREWS_EXPERT)     // T8_4
   #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80,  800, DE200_EXTRUDER_STEPS_MM }
 #elif ENABLED(DE200_ZSCREWS_T8_2)
   #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 1600, DE200_EXTRUDER_STEPS_MM }
@@ -1976,7 +1973,7 @@
 #define PROBING_MARGIN 20
 
 // X and Y axis travel speed (mm/min) between probes
-#define XY_PROBE_FEEDRATE (250*60)
+#define XY_PROBE_FEEDRATE (200*60)
 
 // Feedrate (mm/min) for the first approach when double-probing (MULTIPLE_PROBING == 2)
 #define Z_PROBE_FEEDRATE_FAST (5*60) // Dagoma value (4*60)
@@ -2048,14 +2045,14 @@
  */
 // This should probably match the value of Z_CLEARANCE_FOR_HOMING set c. 120 lines below
 #if ANY(DE200_HEAD_BLTOUCH_ANY, DE200_HEAD_TOUCHMI_ANY)
-  #define Z_CLEARANCE_DEPLOY_PROBE   10 // (mm) Z Clearance for Deploy/Stow
+  #define Z_CLEARANCE_DEPLOY_PROBE 10 // (mm) Z Clearance for Deploy/Stow
 #else
-  #define Z_CLEARANCE_DEPLOY_PROBE    5 // (mm) Z Clearance for Deploy/Stow
+  #define Z_CLEARANCE_DEPLOY_PROBE  5 // (mm) Z Clearance for Deploy/Stow
 #endif
-#define Z_CLEARANCE_BETWEEN_PROBES  5   // (mm) Z Clearance between probe points
-#define Z_CLEARANCE_MULTI_PROBE     2   // (mm) Z Clearance between multiple probes >= 2
-#define Z_PROBE_ERROR_TOLERANCE     3   // (mm) Tolerance for early trigger (<= -probe.offset.z + ZPET)
-#define Z_AFTER_PROBING             5   // (mm) Z position after probing is done
+#define Z_CLEARANCE_BETWEEN_PROBES  5 // (mm) Z Clearance between probe points
+#define Z_CLEARANCE_MULTI_PROBE     2 // (mm) Z Clearance between multiple probes >= 2
+#define Z_PROBE_ERROR_TOLERANCE     3 // (mm) Tolerance for early trigger (<= -probe.offset.z + ZPET)
+#define Z_AFTER_PROBING             5 // (mm) Z position after probing is done
 
 #define Z_PROBE_LOW_POINT          -5 // (mm) Farthest distance below the trigger-point to go before stopping
 
@@ -2496,15 +2493,6 @@
 #endif
 
 /**
- * Bed Distance Sensor
- *
- * Measures the distance from bed to nozzle with accuracy of 0.01mm.
- * For information about this sensor https://github.com/markniu/Bed_Distance_sensor
- * Uses I2C port, so it requires I2C library markyue/Panda_SoftMasterI2C.
- */
-//#define BD_SENSOR
-
-/**
  * Enable detailed logging of G28, G29, M48, etc.
  * Turn on with the command 'M111 S32'.
  * NOTE: Requires a lot of flash!
@@ -2549,7 +2537,7 @@
     #define MESH_TEST_HOTEND_TEMP  205    // (°C) Default nozzle temperature for G26.
     #define MESH_TEST_BED_TEMP      60    // (°C) Default bed temperature for G26.
     #define G26_XY_FEEDRATE         40    // (mm/s) Feedrate for G26 XY moves.
-    #define G26_XY_FEEDRATE_TRAVEL  90    // (mm/s) Feedrate for G26 XY travel moves.
+    #define G26_XY_FEEDRATE_TRAVEL 100    // (mm/s) Feedrate for G26 XY travel moves.
     // E3D v6 retraction must be < 5mm according to datasheet.
     #define G26_RETRACT_MULTIPLIER   4.0  // G26 Q (retraction) used by default between mesh test elements.
   #endif
@@ -2758,7 +2746,7 @@
  *    +-------------->X     +-------------->X     +-------------->Y
  *     XY_SKEW_FACTOR        XZ_SKEW_FACTOR        YZ_SKEW_FACTOR
  */
-//#define SKEW_CORRECTION
+#define SKEW_CORRECTION
 
 #if ENABLED(SKEW_CORRECTION)
   // Input all length measurements here:
