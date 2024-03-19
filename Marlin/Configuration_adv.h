@@ -1439,7 +1439,7 @@
  * vibration and surface artifacts. The algorithm adapts to provide the best possible step smoothing at the
  * lowest stepping frequencies.
  */
-#if ENABLED(DE200_SPECIAL_ADAPTIVE_SMOOTHING)
+#if ALL(DE200_SPECIAL_ADVANCED,DE200_SPECIAL_ADAPTIVE_SMOOTHING)
   #define ADAPTIVE_STEP_SMOOTHING
 #endif
 

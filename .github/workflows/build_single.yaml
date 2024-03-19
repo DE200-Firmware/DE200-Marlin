@@ -92,7 +92,7 @@ on:
         default: STD
       special:
         description: 'Special features:'
-        options: [NONE, BASIC, SERIAL_DEBUG, BED_BILINEAR, BED_UNIFIED, PID, CLASSIC_JERK, NO_S_CURVE, XY_FREQ, NO_ADAPTIVE_SMOOTHING, FT_MOTION, STATUS_ICONS]
+        options: [NONE, BASIC, SERIAL_DEBUG, BED_BILINEAR, BED_UNIFIED, PID, CLASSIC_JERK, NO_S_CURVE, XY_FREQ, ADAPTIVE_SMOOTHING, FT_MOTION, STATUS_ICONS]
         required: true
         type: choice
         default: NONE
