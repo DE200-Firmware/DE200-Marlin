@@ -115,7 +115,7 @@ to support your specific machine.
 * [ ] S-curve
 * [ ] Backlash
 * [ ] Input shaping
-* [ ] Adaptive_Smoothing
+* [ ] Adaptive Smoothing
 * [ ] Firmware Retraction
 * [ ] Meatpack
 * [x] SD Media support
