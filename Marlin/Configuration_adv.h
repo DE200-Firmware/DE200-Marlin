@@ -1252,7 +1252,9 @@
       #define SHAPING_ZETA_Y   0.00f    // Damping ratio of the Y axis (range: 0.0 = no damping to 1.0 = critical damping).
     #endif
   #endif
-  //#define SHAPING_MIN_FREQ  20        // By default the minimum of the shaping frequencies. Override to affect SRAM usage.
+
+  // Because we are defining FREQ_X/Y as zero in some configurations, we need to supply a MIN_FREQ
+  #define SHAPING_MIN_FREQ  15          // By default the minimum of the shaping frequencies. Override to affect SRAM usage.
   //#define SHAPING_MAX_STEPRATE 10000  // By default the maximum total step rate of the shaped axes. Override to affect SRAM usage.
   #define SHAPING_MENU                  // Add a menu to the LCD to set shaping parameters.
 #endif
@@ -2582,7 +2584,7 @@
 //
 #define ARC_SUPPORT                   // Requires ~3226 bytes
 #if ENABLED(ARC_SUPPORT)
-  #define MIN_ARC_SEGMENT_MM      0.1 // (mm) Minimum length of each arc segment
+  #define MIN_ARC_SEGMENT_MM      0.5 // (mm) Minimum length of each arc segment
   #define MAX_ARC_SEGMENT_MM      1.0 // (mm) Maximum length of each arc segment
   #define MIN_CIRCLE_SEGMENTS    72   // Minimum number of segments in a complete circle
   //#define ARC_SEGMENTS_PER_SEC 50   // Use the feedrate to choose the segment length
