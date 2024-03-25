@@ -237,12 +237,11 @@ void menu_configuration();
 #endif
 
 void menu_main() {
-  const bool busy = printingIsActive()
-    #if HAS_MEDIA
-      , card_detected = card.isMounted()
-      , card_open = card_detected && card.isFileOpen()
-    #endif
-  ;
+  const bool busy = printingIsActive();
+  #if HAS_MEDIA
+    const bool card_detected = card.isMounted(),
+               card_open = card_detected && card.isFileOpen();
+  #endif
 
   START_MENU();
   BACK_ITEM(MSG_INFO_SCREEN);
