@@ -218,10 +218,12 @@ jobs:
     - name: Install PlatformIO
       run: |
         python -m pip install --upgrade pip
-        pip install --upgrade platformio
+        # pip install --upgrade platformio
+        pip install --upgrade git+https://github.com/Sophist-UK/platformio-core.git@patch-1
 
     - name: "PlatformIO: ${{ env.BUILD_FILE }}.hex"
-      run: platformio run
+      # run: platformio run
+      run: platformio run --RAMFREE 1024
       env:
         PLATFORMIO_BUILD_FLAGS: "\
           -D DE200_LANGUAGE=${{ inputs.lang }}
@@ -268,21 +270,3 @@ jobs:
       # if temp branch exists
       # Add/commit the build file to the temp branch
       # https://github.com/marketplace/actions/add-commit
-
-    - name: Summary
-      run: |
-        {
-          echo "### Build successful for options..."
-          echo "| Option      | Value       |"
-          echo "| ----------- | ----------- |"
-          echo "| Model       | $MODEL      |"
-          echo "| LCD         | ${{ inputs.screen }} |"
-          echo "| Language    | ${{ inputs.lang }} |"
-          echo "| Extruder    | ${{ inputs.extruder }} |"
-          echo "| Size        | ${{ inputs.size }} |"
-          echo "| Thermistor  | ${{ inputs.thermistor }} |"
-          echo "| Anti-Warp   | ${{ inputs.warping }} |"
-          echo "| Motherboard | ${{ inputs.mb }} |"
-          echo "| Print Head  | ${{ inputs.head }} |"
-          echo "| Sw Options  | ${{ inputs.special }} |"
-        } >> $GITHUB_STEP_SUMMARY
